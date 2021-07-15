@@ -7,12 +7,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="bootstrap-autocomplete.min.js"></script>
 
-    <title>Pomodoro App</title>
+    <title>Tasks</title>
   </head>
   <body>
-
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="">User Main Page</a></li>
@@ -22,19 +20,19 @@
         <li><a href="tasks-tags.html">Tasks_Tags</a></li>
         <li><a href="users-badges.html">Users_Badges</a></li>
     </ul>
+    <h1>Tasks Table</h1>
 
-    <h1>Pomodoro App</h1>
+    <table>
+        <tr>
+            <th>task_id (PK)</th>
+            <th>name</th>
+            <th>status</th>
+            <th>due_date</th>
+            <th>pomodoros</th>
+            <th>assigned_user (FK)</th>
+        </tr>
 
-    <div>
-        <p>Search for a user:</p>
-        <form>
-            <input type="text" size="21" maxlength="120"><input type="submit" value="search">
-        </form>
-    </div>
-    
-
-
-
+    </table>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
