@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Badge Form</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Create/Edit Task</h1>
+    <br>
+
+    <form class="form">
+      <div class="mb-3">
+        <label for="badge_name" class="form-label">Badge Name</label>
+        <input type="text" class="form-control" id="badge_name">
+      </div>
+
+      <div class="mb-3">
+        <label for="badge_criteria" class="form-label">Criteria</label>
+        <input type="number" class="form-control" id="badge_criteria">
+
+        <div class="form-text">How many Tasks/Pomodoros to earn this badge</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="badge_tag" class="form-label">Select A Tag</label>
+        <br>
+        <select id="badge_tag" class="form-select" aria-label="Select A Tag">
+          <option selected>Default Tag</option>
+          <option value="1">Example Tag 1</option>
+          <option value="2">Example Tag 2</option>
+          <option value="3">Example Tag 3</option>
+        </select>
+      </div>
+
+      <br>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  </div>
+</body>
+
+</html>
