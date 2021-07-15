@@ -22,12 +22,23 @@
     </ul>
     <h1>Badges Table</h1>
 
-    <table>
-        <tr>
+    <table class="table">
+        <tr class="table">
             <th>badge_id (PK)</th>
             <th>name</th>
             <th>criteria</th>
             <th>tg_id (FK)</th>
+            <th>Actions</th>
+        </tr>
+        <tr class="table">
+            <td>Badge ID 1</td>
+            <td>Badge Name</td>
+            <td>Badge Criteria</td>
+            <td>Tag ID</td>
+            <td>
+                <button onclick="window.location.href='badge_form.html';" type="button" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </td>
         </tr>
 
     </table>
