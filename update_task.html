@@ -8,22 +8,11 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Tasks</title>
+    <title>Update Task</title>
   </head>
   <body>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="">User Main Page</a></li>
-        <li><a href="badges.html">Badges</a></li>
-        <li><a href="tags.html">Tags</a></li>
-        <li><a href="tasks.html">Tasks</a></li>
-        <li><a href="tasks-tags.html">Tasks_Tags</a></li>
-        <li><a href="users-badges.html">Users_Badges</a></li>
-    </ul>
-    <h1>Tasks Table</h1>
-
     <div>
-        <p>Insert a new Task</p>
+        <p>Update a Task</p>
         <form>
             <label>name</label>
             <input type="text" size="21" maxlength="120">
@@ -35,37 +24,9 @@
             <input type="number">
             <label>assigned_user (FK)</label>
             <input type="number">
-            <input type="submit" value="Insert">
+            <input type="submit" value="Update">
         </form>
     </div>
-
-    <table>
-        <tr>
-            <th>task_id (PK)</th>
-            <th>name</th>
-            <th>status</th>
-            <th>due_date</th>
-            <th>pomodoros</th>
-            <th>assigned_user (FK)</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Sample task</td>
-            <td>1</td>
-            <td>2019-03-10 02:55:05</td>
-            <td>4</td>
-            <td>2</td>
-            <td>
-                <button onclick="window.location.href='update_task.html';" type="button" class="btn btn-primary">Update</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-
-        </tr>
-
-    </table>
-
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
