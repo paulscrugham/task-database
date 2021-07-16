@@ -7,14 +7,11 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="bootstrap-autocomplete.min.js"></script>
 
-    <title>Pomodoro App</title>
+    <title>Users</title>
   </head>
   <body>
-
-    <div class="container">
-
+      <div class="container">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="user_main_page.html">User Main Page</a></li>
@@ -25,19 +22,30 @@
             <li><a href="tasks-tags.html">Tasks_Tags</a></li>
             <li><a href="users-badges.html">Users_Badges</a></li>
         </ul>
-
-        <h1>Pomodoro App</h1>
-
-        <p>Search for a user</p>
-
-        <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-            aria-describedby="search-addon" />
-            <button type="button" class="btn btn-outline-primary">Search</button>
-        </div>
-    </div>
-
+        <h1>Users Table</h1>
     
+        <button onclick="window.location.href='user_form.html';" type="button" class="btn btn-primary">Create a new User</button>
+    
+        <table class="table">
+            <tr>
+                <th>user_id (PK)</th>
+                <th>fist_name</th>
+                <th>last_name</th>
+                <th>Actions</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Frodo</td>
+                <td>Baggins</td>
+                <td>
+                    <button onclick="window.location.href='user_form.html';" type="button" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </td>
+    
+            </tr>
+    
+        </table>
+      </div>
 
 
 
