@@ -22,22 +22,7 @@
     </ul>
     <h1>Tasks Table</h1>
 
-    <div>
-        <p>Insert a new Task</p>
-        <form>
-            <label>name</label>
-            <input type="text" size="21" maxlength="120">
-            <label>status</label>
-            <input type="text" size="21" maxlength="120">
-            <label>due_date</label>
-            <input type="datetime-local">
-            <label>pomodoros</label>
-            <input type="number">
-            <label>assigned_user (FK)</label>
-            <input type="number">
-            <input type="submit" value="Insert">
-        </form>
-    </div>
+    <button onclick="window.location.href='task_form.html';" type="button" class="btn btn-primary">Create a new task</button>
 
     <table class="table">
         <tr>
@@ -57,7 +42,7 @@
             <td>4</td>
             <td>2</td>
             <td>
-                <button onclick="window.location.href='update_task.html';" type="button" class="btn btn-primary">Update</button>
+                <button onclick="window.location.href='task_form.html';" type="button" class="btn btn-primary">Update</button>
                 <button type="button" class="btn btn-danger">Delete</button>
             </td>
 
