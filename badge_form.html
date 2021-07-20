@@ -42,7 +42,7 @@
     </nav>
 
     <div class="container">
-      <h1 class="display-4">Create/Edit Badge</h1>
+      <h1 class="display-4">Create/Edit a Badge</h1>
       <br>
 
       <form class="form">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="badge_criteria" class="form-label">Choose how many Tasks/Pomodoros are required to earn this badge (criteria):</label>
+          <label for="badge_criteria" class="form-label">Choose how many Pomodoros must be completed to earn this badge (criteria):</label>
           <input type="number" class="form-control" id="badge_criteria">
         </div>
 
@@ -60,10 +60,12 @@
           <label for="badge_tag" class="form-label">Select A Tag</label>
           <br>
           <select id="badge_tag" class="form-select" aria-label="Select A Tag">
-            <option selected>Default Tag</option>
-            <option value="1">Example Tag 1</option>
-            <option value="2">Example Tag 2</option>
-            <option value="3">Example Tag 3</option>
+            <option selected>None</option>
+            <option value="1">High Priority</option>
+            <option value="2">Low Priority</option>
+            <option value="3">School</option>
+            <option value="4">Work</option>
+            <option value="5">Personal</option>
           </select>
         </div>
 

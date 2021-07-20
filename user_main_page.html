@@ -41,7 +41,7 @@
     </nav>
 
     <div class="container">
-      <h1 class="text-center">First Name Last Name</h1>
+      <h1 class="text-center">Pomo Doro</h1>
     </div>
 
     <br><br>
@@ -49,20 +49,40 @@
       <h3>Upcoming Tasks</h3>
       <table class="table">
         <tr>
-          <td>Task 1</td>
-          <td>Task 2</td>
-          <td>Task 3</td>
+          <td>
+            Complete homework assignment #4
+            <ul>
+              <li>High Priority</li>
+              <li>School</li>
+            </ul>
+          </td>
+          <td>
+            Finish project requirements document
+            <ul>
+              <li>High Priority</li>
+              <li>Work</li>
+            </ul>
+          </td>
+          <td>
+            Come up with new song ideas
+            <ul>
+              <li>Low Priority</li>
+              <li>Personal</li>
+            </ul>
+          </td>
         </tr>
       </table>
     </div>
+
     <br>
+
     <div class="container">
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-primary">All Tasks</button>
+          <button type="button" class="btn btn-primary">Show every task assigned to Pomo Doro</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-primary">All Tags</button>
+          <button type="button" class="btn btn-primary">Show all Tags</button>
         </div>
       </div>
     </div>
@@ -70,12 +90,37 @@
     <br><br>
 
     <div class="container">
-      <h3>Your Badges</h3>
+      <form class="form">
+
+        <div class="mb-3">
+          <label for="badge_tag" class="form-label">Select a task to start timing:</label>
+          <br>
+          <select id="badge_tag" class="form-select" aria-label="Select A Tag">
+            <option selected>None</option>
+            <option value="1">Complete homework assignment #4</option>
+            <option value="2">Finish project requirements document</option>
+            <option value="3">Come up with new song ideas</option>
+          </select>
+        </div>
+
+        <br>
+        <button type="button" onclick="window.location.href='timer.html';" class="btn btn-primary">Start Pomodoro Timer</button>
+      </form>
+    </div>
+
+    <br><br>
+
+
+
+    <br><br>
+
+    <div class="container">
+      <h3>Pomo Doro's Earned Badges</h3>
       <table class="table">
         <tr>
-          <td>Badge 1</td>
-          <td>Badge 2</td>
-          <td>Badge 3</td>
+          <td>Complete 10 High Priority Pomodoros</td>
+          <td>Complete 5 School Pomodoros</td>
+          <td>Complete 20 Work Pomodoros</td>
         </tr>
       </table>
     </div>

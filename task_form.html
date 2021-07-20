@@ -42,17 +42,17 @@
   </nav>
 
   <div class="container">
-    <h1 class="display-4">Create/Edit Task</h1>
+    <h1 class="display-4">Create/Edit a Task</h1>
     <br>
 
     <form class="form">
       <div class="mb-3">
-        <label for="task_name" class="form-label">Task Name</label>
+        <label for="task_name" class="form-label">Enter a Task name:</label>
         <input type="text" class="form-control" id="task_name">
       </div>
 
       <div class="mb-3">
-        <label for="task_status" class="form-label">Task Status</label>
+        <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
         <select id="task_status" class="form-select" aria-label="Select A Tag">
           <option selected></option>
@@ -62,24 +62,26 @@
       </div>
 
       <div class="mb-3">
-        <label for="task_duedate" class="form-label">Due Date</label>
+        <label for="task_duedate" class="form-label">Enter a date due:</label>
         <input type="date" class="form-control" id="task_duedate">
       </div>
 
       <div class="mb-3">
-        <label for="task_pomodoros" class="form-label">Pomodoros</label>
-        <input type="numbers" class="form-control" id="task_pomodoros">
+        <label for="task_duetime" class="form-label">Enter a time due:</label>
+        <input type="time" class="form-control" id="task_duetime">
       </div>
 
       <div class="mb-3">
-        <label for="task_assigned_user" class="form-label">Assigned User</label>
-        <br>
-        <select id="task_assigned_user" class="form-select" aria-label="Select A Tag">
-          <option selected></option>
-          <option value="1">Example user</option>
-          <option value="2">Example user</option>
-          <option value="3">Example user</option>
-        </select>
+        <label for="task_pomodoros" class="form-label">Enter a number of Pomodoros:</label>
+        <input type="number" class="form-control" id="task_pomodoros">
+      </div>
+
+      <div class="mb-3">
+        <label for="task_assigned_user" class="form-label">Search for a user by first and last name to assign this task:</label>
+        <div class="input-group">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="task_assigned_user"/>
+            <button type="button" class="btn btn-outline-primary">Search</button>
+        </div>
       </div>
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
