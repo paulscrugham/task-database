@@ -14,7 +14,7 @@ CREATE TABLE `Tasks` (
     `status` BOOL NOT NULL,
     `due_date` DATETIME NOT NULL,
     `pomodoros` INT(4) NOT NULL,
-    FOREIGN KEY (`assigned_user`) REFERENCES Users (`user_id`)
+    FOREIGN KEY (`assigned_user`) REFERENCES Users (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- Query to create the Tags table
@@ -39,8 +39,8 @@ CREATE TABLE `Users_Badges` (
     `ur_id` int(11) NOT NULL,
     `be_id` int(11) NOT NULL,
     PRIMARY KEY (`ur_id`, `be_id`),
-    FOREIGN KEY (`ur_id`) REFERENCES `Users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-    FOREIGN KEY (`be_id`) REFERENCES `Badges` (`badge_id`) ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY (`ur_id`) REFERENCES `Users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`be_id`) REFERENCES `Badges` (`badge_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- Query to create the Tasks_Tags table
@@ -48,6 +48,6 @@ CREATE TABLE `Tasks_Tags` (
     `tk_id` INT(11) NOT NULL,
     `tg_id` INT(11) NOT NULL,
     PRIMARY KEY(`tk_id`, `tg_id`),
-    FOREIGN KEY (`tk_id`) REFERENCES Tasks (`task_id`),
-    FOREIGN KEY (`tg_id`) REFERENCES Tags (`tag_id`)
+    FOREIGN KEY (`tk_id`) REFERENCES Tasks (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`tg_id`) REFERENCES Tags (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
