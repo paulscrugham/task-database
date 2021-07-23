@@ -51,3 +51,23 @@ CREATE TABLE `Tasks_Tags` (
     FOREIGN KEY (`tk_id`) REFERENCES Tasks (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`tg_id`) REFERENCES Tags (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+
+-- Sample data
+
+-- Users Table
+INSERT INTO Users(first_name, last_name) VALUES ("Frodo", "Baggins"), ("Pomo", "Doro");
+
+-- Tags Table
+INSERT INTO Tags(name) VALUES ("High Priority"), ("Low Priority"), ("School"), ("Work"), ("Personal");
+
+-- Badges Table
+INSERT INTO Badges (name, tg_id, criteria) VALUES 
+    ("Complete 10 High Priority Pomodoros", (SELECT tag_id FROM Tags WHERE name="High Priority"), 10),
+    ("Complete 5 School Pomodoros", (SELECT tag_id FROM Tags WHERE name="School"), 5),
+    ("Complete 20 Work Pomodoros", (SELECT tag_id FROM Tags WHERE name="School"), 20);
+
+-- Tasks Table
+INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES 
+    ("Complete homework assignment #4", 0, "2021-08-01 08:30:00", 4, (SELECT user_id FROM Users WHERE first_name="Pomo" AND last_name="Doro")),
+    ("Finish project requirements document", 0, "2021-08-10 11:30:00", 10, (SELECT user_id FROM Users WHERE first_name="Pomo" AND last_name="Doro"));
