@@ -1,6 +1,6 @@
 -- Landing Page Search Query for User
 SELECT first_name, last_name FROM Users
-WHERE CONCAT(first_name, last_name) LIKE :userInput
+WHERE CONCAT(first_name, last_name) LIKE CONCAT('%', :userInput, '%');
 
 -- SELECT Query for all columns, Tasks Table (Table-Specific Query)
 SELECT * FROM Tasks;
