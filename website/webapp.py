@@ -8,9 +8,9 @@ webapp = Flask(__name__)
 @webapp.route('/hello')
 #provide a view (fancy name for a function) which responds to any requests on this route
 def hello():
-    return "Hello World!";
+    return "Hello World!"
 
-@webapp.route('/')
+@webapp.route('/dbtest')
 def index():
     db_connection = connect_to_database()
     if request.method == 'GET':
@@ -18,3 +18,23 @@ def index():
         values = execute_query(db_connection, query).fetchall()
         print(values)
     return render_template('home.html', results=values)
+
+
+@webapp.route('/show_badges')
+def show_badges():
+    db_connection = connect_to_database()
+    query = 'SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id;'
+    results = execute_query(db_connection, query).fetchall()
+    print(results)
+    return render_template('show_badges.html', badges=results)
+
+
+@webapp.route('/add_badge', methods=['POST', 'GET'])
+def add_badge():
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT tag_id, name from Tags;'
+        result = execute_query(db_connection, query).fetchall()
+        print(result)
+
+        return render_template('add_badge.html', tags=result)
