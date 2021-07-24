@@ -31,3 +31,6 @@ SELECT b.* FROM Badges b INNER JOIN Users_Badges u_b
 	ON u_b.be_id = b.badge_id
 WHERE u_b.ur_id = :selected_User_id
 GROUP BY b.badge_id;
+
+-- UPDATE query on the Task's status: mark it as complete
+UPDATE Tasks SET status = 1 WHERE task_id = :completed_task_id;
