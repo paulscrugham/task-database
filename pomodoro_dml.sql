@@ -34,3 +34,10 @@ GROUP BY b.badge_id;
 
 -- UPDATE query on the Task's status: mark it as complete
 UPDATE Tasks SET status = 1 WHERE task_id = :completed_task_id;
+
+-- SELECT Query for Users table (Table-Specific Query)
+SELECT * FROM Users;
+
+-- SELECT Query for Badges Table (Table-Specific Query)
+SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id;
+
