@@ -25,3 +25,9 @@ WHERE task_id = :selected_Task_id;
 
 -- DELETE Query, Tasks Table (Table-Specific Query)
 DELETE FROM Tasks WHERE task_id = :selected_Task_id;
+
+-- SELECT query for a User's earned badges
+SELECT b.* FROM Badges b INNER JOIN Users_Badges u_b
+	ON u_b.be_id = b.badge_id
+WHERE u_b.ur_id = :selected_User_id
+GROUP BY b.badge_id;
