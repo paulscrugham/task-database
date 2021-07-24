@@ -12,14 +12,9 @@ def hello():
 
 @webapp.route('/')
 def index():
-    print("Running queries for project step 0")
     db_connection = connect_to_database()
-    drop_table = "DROP TABLE IF EXISTS diagnostic;"
-    create_table = "CREATE TABLE diagnostic(id INT PRIMARY KEY AUTO_INCREMENT, text VARCHAR(255) NOT NULL);"
-    insert_row = "INSERT INTO diagnostic (text) VALUES ('MySQL is Working!')"
-    query = "SELECT * FROM diagnostic;"
-    execute_query(db_connection, drop_table);
-    execute_query(db_connection, create_table);
-    execute_query(db_connection, insert_row);
-    values = execute_query.fetchall(db_connection, query);
+    if request.method == 'GET':
+        query = 'SELECT * FROM Tasks;'
+        values = execute_query(db_connection, query).fetchall()
+        print(values)
     return render_template('home.html', results=values)
