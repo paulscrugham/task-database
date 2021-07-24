@@ -7,6 +7,12 @@ SELECT t.task_id, t.name, t.status,	t.due_date, t.pomodoros,
        u.first_name, u.last_name
 FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;
 
+-- SELECT Query for In-Progress Tasks and associated Tags
+SELECT * FROM Tasks 
+JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id 
+JOIN Tags ON t_t.tg_id = Tags.tag_id 
+WHERE assigned_user = 2 AND status = 0;
+
 -- INSERT Query, Tasks Table (Table-Specific Query)
 -- FIXME: How to use the search bar?
 INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user)
