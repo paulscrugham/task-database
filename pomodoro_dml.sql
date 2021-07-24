@@ -3,7 +3,9 @@ SELECT first_name, last_name FROM Users
 WHERE CONCAT(first_name, last_name) LIKE CONCAT('%', :userInput, '%');
 
 -- SELECT Query for all columns, Tasks Table (Table-Specific Query)
-SELECT * FROM Tasks;
+SELECT t.task_id, t.name, t.status,	t.due_date, t.pomodoros,
+       u.first_name, u.last_name
+FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;
 
 -- INSERT Query, Tasks Table (Table-Specific Query)
 -- FIXME: How to use the search bar?
