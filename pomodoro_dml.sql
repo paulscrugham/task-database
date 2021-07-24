@@ -40,6 +40,21 @@ UPDATE Tags SET name = :nameInput WHERE tag_id = :selected_Tag_id;
 -- DELETE Query, Tags Table (Table-Specific Query)
 DELETE FROM Tags WHERE tag_id = :selected_Tag_id;
 
+-- SELECT Query for all columns, Tasks_Tags Table (Table-Specific Query)
+SELECT tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t
+JOIN Tasks tasks ON t_t.tk_id = tasks.task_id
+JOIN Tags tags ON t_t.tg_id = tags.tag_id;
+
+-- INSERT Query, Tasks_Tags Table (Table-Specific Query)
+INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (:task_id_Input, :tag_id_Input);
+
+-- UPDATE Query, Tasks_Tags Table (Table-Specific Query)
+UPDATE Tasks_Tags SET tk_id = :task_id_Input, tg_id = :tag_id_Input
+WHERE tag_id = :selected_Tag_id;
+
+-- DELETE Query, Tasks_Tags Table (Table-Specific Query)
+DELETE FROM Tags WHERE tk_id = :selected_task_id AND tg_id = :selected_tag_id;
+
 -- SELECT query for a User's earned badges
 SELECT b.* FROM Badges b INNER JOIN Users_Badges u_b
 	ON u_b.be_id = b.badge_id
