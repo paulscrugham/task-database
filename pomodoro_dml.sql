@@ -64,9 +64,45 @@ GROUP BY b.badge_id;
 -- UPDATE query on the Task's status: mark it as complete
 UPDATE Tasks SET status = 1 WHERE task_id = :completed_task_id;
 
--- SELECT Query for Users table (Table-Specific Query)
+-- SELECT Query, Users Table (Table-Specific Query)
 SELECT * FROM Users;
 
--- SELECT Query for Badges Table (Table-Specific Query)
+-- INSERT Query, Users Table (Table-Specific Query)
+INSERT INTO Users(first_name, last_name) VALUES (:first_nameInput, :last_nameInput);
+
+-- UPDATE Query, Users Table (Table-Specific Query)
+UPDATE Users SET first_name = :first_nameInput, last_name = :last_nameInput WHERE user_id = :selected_user_id;
+
+-- DELETE Query, Users Table (Table-Specific Query)
+DELETE FROM Users WHERE user_id = :selected_user_id;
+
+-- SELECT Query, Badges Table (Table-Specific Query)
 SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id;
+
+-- INSERT Query, Badges Table (Table-Specific Query)
+INSERT INTO Badges(name, tg_id, criteria) VALUES (:nameInput, (SELECT tag_id FROM Tags WHERE tag_id = :userInput), :criteriaInput);
+
+-- UPDATE Query, Badges Table (Table-Specific Query)
+UPDATE Users SET first_name = :first_nameInput, last_name = :last_nameInput WHERE user_id = :selected_user_id;
+
+-- DELETE Query, Badges Table (Table-Specific Query)
+DELETE FROM Users WHERE user_id = :selected_user_id;
+
+-- SELECT Query, Users_Badges Table (Table-Specific Query)
+SELECT users.first_name AS User, badges.name AS Badge FROM Users_Badges u_b
+JOIN Users users ON u_b.ur_id = users.user_id
+JOIN Badges badges ON u_b.be_id = badges.badge_id;
+
+-- INSERT Query, Users_Badges Table (Table-Specific Query)
+INSERT INTO Users_Badges(ur_id, be_id) VALUES (:user_id_Input, :badge_id_Input);
+
+-- UPDATE Query, Users_Badges Table (Table-Specific Query)
+UPDATE Users_Badges SET ur_id = :user_id_Input, be_id = :badge_id_Input
+WHERE badge_id = :selected_badge_id;
+
+-- DELETE Query, Users_Badges Table (Table-Specific Query)
+DELETE FROM Users_Badges WHERE ur_id = :selected_user_id AND be_id = :selected_badge_id;
+
+
+
 
