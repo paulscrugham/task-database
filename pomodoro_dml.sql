@@ -11,7 +11,10 @@ FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;
 SELECT * FROM Tasks 
 JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id 
 JOIN Tags ON t_t.tg_id = Tags.tag_id 
-WHERE assigned_user = 2 AND status = 0;
+WHERE assigned_user = :userInput AND status = 0;
+
+-- SELECT Query for all of a User's tasks
+SELECT * FROM Tasks WHERE assigned_user = :userInput;
 
 -- INSERT Query, Tasks Table (Table-Specific Query)
 -- FIXME: How to use the search bar?
