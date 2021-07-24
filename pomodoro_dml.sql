@@ -28,6 +28,18 @@ WHERE task_id = :selected_Task_id;
 -- DELETE Query, Tasks Table (Table-Specific Query)
 DELETE FROM Tasks WHERE task_id = :selected_Task_id;
 
+-- SELECT Query for all columns, Tags Table (Table-Specific Query)
+SELECT * FROM Tags;
+
+-- INSERT Query, Tags Table (Table-Specific Query)
+INSERT INTO Tags(name) VALUES (:nameInput);
+
+-- UPDATE Query, Tags Table (Table-Specific Query)
+UPDATE Tags SET name = :nameInput WHERE tag_id = :selected_Tag_id;
+
+-- DELETE Query, Tags Table (Table-Specific Query)
+DELETE FROM Tags WHERE tag_id = :selected_Tag_id;
+
 -- SELECT query for a User's earned badges
 SELECT b.* FROM Badges b INNER JOIN Users_Badges u_b
 	ON u_b.be_id = b.badge_id
