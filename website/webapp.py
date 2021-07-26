@@ -20,6 +20,8 @@ def index():
     return render_template('home.html', results=values)
 
 
+# app routes for Badges page
+
 @webapp.route('/show_badges')
 def show_badges():
     db_connection = connect_to_database()
@@ -28,7 +30,6 @@ def show_badges():
     print(results)
     return render_template('show_badges.html', badges=results)
 
-
 @webapp.route('/add_badge', methods=['POST', 'GET'])
 def add_badge():
     db_connection = connect_to_database()
@@ -36,13 +37,28 @@ def add_badge():
         query = 'SELECT tag_id, name from Tags;'
         result = execute_query(db_connection, query).fetchall()
         print(result)
-
         return render_template('add_badge.html', tags=result)
+
     elif request.method == 'POST':
+        print('Adding a Badge...')
+        print(request.form['badge_name'])
+        print(request.form['badge_criteria'])
         badge_name = request.form['badge_name']
         badge_criteria = request.form['badge_criteria']
         badge_tag = request.form['badge_tag']
-        query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (:nameInput, (SELECT tag_id FROM Tags WHERE tag_id = :userInput), :criteriaInput);'
+        query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (%s, %s, %s);'
+        data = (badge_name, badge_tag, badge_criteria)
+        execute_query(db_connection, query, data)
+        return show_badges()
+
+@webapp.route('/delete_badge/<int:id>')
+def delete_people(id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Badges WHERE badge_id = %s;'
+    data = (id,)
+
+    result = execute_query(db_connection, query, data)
+    return (str(result.rowcount) + " row deleted")
 
 @webapp.route('/show_tasks')
 def show_tasks():
