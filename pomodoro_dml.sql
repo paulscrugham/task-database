@@ -94,10 +94,10 @@ SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON 
 INSERT INTO Badges(name, tg_id, criteria) VALUES (:nameInput, (SELECT tag_id FROM Tags WHERE tag_id = :userInput), :criteriaInput);
 
 -- UPDATE Query, Badges Table (Table-Specific Query)
-UPDATE Users SET first_name = :first_nameInput, last_name = :last_nameInput WHERE user_id = :selected_user_id;
+UPDATE Badges SET name = :nameInput, tag_id = :tag_idInput, criteria = :criteriaInput WHERE badge_id = :selected_badge_id;
 
 -- DELETE Query, Badges Table (Table-Specific Query)
-DELETE FROM Users WHERE user_id = :selected_user_id;
+DELETE FROM Badges WHERE badge_id = :selected_badge_id;
 
 -- SELECT Query, Users_Badges Table (Table-Specific Query)
 SELECT users.first_name AS User, badges.name AS Badge FROM Users_Badges u_b

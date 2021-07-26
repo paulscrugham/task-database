@@ -20,6 +20,8 @@ def index():
     return render_template('home.html', results=values)
 
 
+# app routes for Badges page
+
 @webapp.route('/show_badges')
 def show_badges():
     db_connection = connect_to_database()
@@ -27,7 +29,6 @@ def show_badges():
     results = execute_query(db_connection, query).fetchall()
     print(results)
     return render_template('show_badges.html', badges=results)
-
 
 @webapp.route('/add_badge', methods=['POST', 'GET'])
 def add_badge():
@@ -50,3 +51,12 @@ def add_badge():
         data = (badge_name, badge_tag, badge_criteria)
         execute_query(db_connection, query, data)
         return show_badges()
+
+@webapp.route('/delete_badge/<int:id>')
+def delete_people(id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Badges WHERE badge_id = %s;'
+    data = (id,)
+
+    result = execute_query(db_connection, query, data)
+    return (str(result.rowcount) + " row deleted")
