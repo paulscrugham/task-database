@@ -38,3 +38,8 @@ def add_badge():
         print(result)
 
         return render_template('add_badge.html', tags=result)
+    elif request.method == 'POST':
+        badge_name = request.form['badge_name']
+        badge_criteria = request.form['badge_criteria']
+        badge_tag = request.form['badge_tag']
+        query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (:nameInput, (SELECT tag_id FROM Tags WHERE tag_id = :userInput), :criteriaInput);'

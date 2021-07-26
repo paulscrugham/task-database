@@ -1,3 +1,5 @@
+-- GENERAL NOTE: all variables with a preceding ':' indicate user or app provided input for the query
+
 -- Landing Page Search Query for User
 SELECT first_name, last_name FROM Users
 WHERE CONCAT(first_name, last_name) LIKE CONCAT('%', :userInput, '%');
