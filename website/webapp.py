@@ -112,7 +112,7 @@ def add_task():
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
 
-        query = 'INSERT INTO Badges(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
+        query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
         data = (task_name, task_status, task_due_date + task_time_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
         return show_badges()
