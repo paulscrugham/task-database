@@ -43,3 +43,11 @@ def add_badge():
         badge_criteria = request.form['badge_criteria']
         badge_tag = request.form['badge_tag']
         query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (:nameInput, (SELECT tag_id FROM Tags WHERE tag_id = :userInput), :criteriaInput);'
+
+@webapp.route('/show_tasks')
+def show_tasks():
+    db_connection = connect_to_database()
+    query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;'
+    results = execute_query(db_connection, query).fetchall()
+    print(results)
+    return render_template('show_tasks.html', tasks=results)
