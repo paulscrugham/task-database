@@ -4,22 +4,35 @@
     <h1 class="display-4">Create/Edit a Badge</h1>
     <br>
 
-    <form class="form" action="/add_badge" method="post">
+    <form class="form" action="{{ form_action }}" method="post">
       <div class="mb-3">
         <label for="badge_name" class="form-label">Enter a Badge Name</label>
+        {% if badge %}
+        <input type="text" class="form-control" id="badge_name" name="badge_name" value="{{ badge[0][1] }}">
+        {% else %}
         <input type="text" class="form-control" id="badge_name" name="badge_name">
+        {% endif %}
       </div>
 
       <div class="mb-3">
         <label for="badge_criteria" class="form-label">Choose how many Pomodoros must be completed to earn this badge (criteria):</label>
+        {% if badge %}
+        <input type="number" class="form-control" id="badge_criteria" name="badge_criteria" value="{{ badge[0][2] }}">
+        {% else %}
         <input type="number" class="form-control" id="badge_criteria" name="badge_criteria">
+        {% endif %}
       </div>
 
       <div class="mb-3">
         <label for="badge_tag" class="form-label">Select A Tag</label>
         <br>
         <select id="badge_tag" class="form-select" aria-label="Select A Tag" name="badge_tag">
-            <option selected>None</option>
+            {% if badge %}
+            <option selected="{{ badge[0][3] }}" value="{{ badge[0][3] }}">{{ badge[0][4] }}</option>
+            <option value="None">None</option>
+            {% else %}
+            <option selected value="None">None</option>
+            {% endif %}
             {% for item in tags %}
             <option value="{{ item[0] }}">{{ item[1] }}</option>
             {% endfor %}

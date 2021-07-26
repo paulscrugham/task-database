@@ -36,13 +36,11 @@ def add_badge():
     if request.method == 'GET':
         query = 'SELECT tag_id, name from Tags;'
         result = execute_query(db_connection, query).fetchall()
-        print(result)
-        return render_template('add_badge.html', tags=result)
+        print('result: ', result)
+        return render_template('add_badge.html', tags=result, form_action='/add_badge')
 
     elif request.method == 'POST':
         print('Adding a Badge...')
-        print(request.form['badge_name'])
-        print(request.form['badge_criteria'])
         badge_name = request.form['badge_name']
         badge_criteria = request.form['badge_criteria']
         badge_tag = request.form['badge_tag']
@@ -52,13 +50,40 @@ def add_badge():
         return show_badges()
 
 @webapp.route('/delete_badge/<int:id>')
-def delete_people(id):
+def delete_badge(id):
     db_connection = connect_to_database()
     query = 'DELETE FROM Badges WHERE badge_id = %s;'
     data = (id,)
-
     result = execute_query(db_connection, query, data)
-    return (str(result.rowcount) + " row deleted")
+    return show_badges()
+
+@webapp.route('/update_badge/<int:id>', methods=['POST', 'GET'])
+def update_badge(id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT tag_id, name from Tags;'
+        tags = execute_query(db_connection, query).fetchall()
+        query = 'SELECT b.badge_id, b.name, b.criteria, t.tag_id, t.name FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id WHERE badge_id = %s;'
+        data = (id,)
+        badge = execute_query(db_connection, query, data).fetchall()
+        return render_template('add_badge.html', tags=tags, badge=badge, form_action='/update_badge/' + str(id))
+    
+    elif request.method == 'POST':
+        print('Updating Badge', id, '...')
+        badge_name = request.form['badge_name']
+        badge_criteria = request.form['badge_criteria']
+        if request.form['badge_tag'] == "None":
+            badge_tag = None
+        else:
+            badge_tag = request.form['badge_tag']
+        query = 'UPDATE Badges SET name = %s, tg_id = %s, criteria = %s WHERE badge_id = %s;'
+        data = (badge_name, badge_tag, badge_criteria, id)
+        execute_query(db_connection, query, data)
+        return show_badges()
+
+
+
+# app routes for Tasks page
 
 @webapp.route('/show_tasks')
 def show_tasks():
