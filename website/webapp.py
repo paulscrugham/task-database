@@ -69,7 +69,7 @@ def show_tasks():
     return render_template('show_tasks.html', tasks=results)
 
 @webapp.route('/add_task', methods=['POST', 'GET'])
-def add_badge():
+def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT user_id, first_name, last_name FROM Users;'
