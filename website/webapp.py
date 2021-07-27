@@ -134,7 +134,7 @@ def add_task():
         query = 'SELECT user_id, first_name, last_name FROM Users;'
         result = execute_query(db_connection, query).fetchall()
         print(result)
-        return render_template('add_task.html', tags=result)
+        return render_template('add_task.html', tags=result, form_action='/add_task')
 
     elif request.method == 'POST':
         print('Adding a Task...')
@@ -147,6 +147,8 @@ def add_task():
         task_assigned_user = request.form['task_assigned_user']
 
         query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
-        data = (task_name, task_status, task_due_date + task_time_due, task_pomodoros, task_assigned_user)
+        task_due = str(task_due_date) + ' ' + str(task_time_due)
+        print('task_due: ', task_due)
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
-        return show_badges()
+        return show_tasks()
