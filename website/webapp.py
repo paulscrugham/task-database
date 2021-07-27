@@ -138,7 +138,7 @@ def add_task():
         print(request.form['task_name'])
         print(request.form['task_status'])
         task_name = request.form['task_name']
-        task_status = request.form['task_status']
+        task_status = str(request.form['task_status'])
         task_due_date = request.form['task_due_date']
         task_time_due = request.form['task_time_due']
         task_pomodoros = request.form['task_pomodoros']
