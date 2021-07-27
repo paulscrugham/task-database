@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask import request, redirect
+from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 #create the web application
 webapp = Flask(__name__)
@@ -27,6 +28,8 @@ def home():
     return render_template('home.html')
 
 
+# app routes for user searches
+
 @webapp.route('/user_search', methods=['POST'])
 def user_search():
     db_connection = connect_to_database()
@@ -39,7 +42,18 @@ def user_search():
     return render_template('user_search.html', results=results)
 
 
-test = 'this is a %% string'
+# app routes for User Main Page
+
+@webapp.route('/user_main_page/<int:id>')
+def user_main_page(id):
+    db_connection = connect_to_database()
+    query = 'SELECT first_name, last_name FROM Users WHERE user_id = %s;'
+    data = (id,)
+    user = execute_query(db_connection, query, data).fetchone()
+    print(user)
+    return render_template('user_main_page.html', user=user)
+
+
 # app routes for Badges page
 
 @webapp.route('/show_badges')
