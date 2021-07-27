@@ -131,14 +131,12 @@ def show_tasks():
 def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = 'SELECT user_id, first_name, last_name FROM Users;'
-        result = execute_query(db_connection, query).fetchall()
-        print(result)
-        return render_template('add_task.html', tags=result, form_action='/add_task')
+        return render_template('add_task.html', form_action='/add_task')
 
     elif request.method == 'POST':
         print('Adding a Task...')
-        print(request.form)
+        print(request.form['task_name'])
+        print(request.form['task_status'])
         task_name = request.form['task_name']
         task_status = request.form['task_status']
         task_due_date = request.form['task_due_date']
