@@ -152,9 +152,9 @@ def add_task():
         return show_tasks()
 
 @webapp.route('/delete_task/<int:task_id>')
-def delete_badge(task_id):
+def delete_task(task_id):
     db_connection = connect_to_database()
     query = 'DELETE FROM Tasks WHERE task_id = %s;'
     data = (task_id,)
     result = execute_query(db_connection, query, data)
-    return show_badges()
+    return show_tasks()
