@@ -164,7 +164,7 @@ def delete_task(task_id):
 def update_task(task_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = 'SELECT * FROM Tasks WHERE task_id = %s;'
+        query = 'SELECT task_id, name, status, cast(due_date as date) [date], cast(due_date as time) [time], pomodoros, assigned_user FROM Tasks WHERE task_id = %s;'
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
         print(results)

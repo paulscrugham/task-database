@@ -28,7 +28,7 @@
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
         {% if task_data %}
-        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][4]}}">
+        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][3]}}">
         {% else %}
         <input id="task_due_date" type="date" class="form-control" name="task_due_date">
         {% endif %}
@@ -56,7 +56,7 @@
         <label for="task_assigned_user" class="form-label">Enter the assigned User ID:</label>
         <div class="input-group">
           {% if task_data %}
-          <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user" value="{{task_data[0][0]}}"/>
+          <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user" value="{{task_data[0][6]}}"/>
           {% else %}
           <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user"/>
           {% endif %}
