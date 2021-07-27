@@ -136,7 +136,7 @@ def add_task():
     elif request.method == 'POST':
         print('Adding a Task...')
         print(request.form['task_name'])
-        print(request.form['task_status'])
+        print(request.form['task_time_due'])
         task_name = request.form['task_name']
         task_status = str(request.form['task_status'])
         task_due_date = request.form['task_due_date']
