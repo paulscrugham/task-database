@@ -19,7 +19,7 @@
         <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
         <select id="task_status" name="task_status" class="form-select" aria-label="Select A Tag">
-          <option selected>"{{ task_data[0][2] }}"</option>
+          <option selected></option>
           <option value="0">In Progress</option>
           <option value="1">Complete</option>
         </select>
@@ -28,7 +28,7 @@
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
         {% if task_data %}
-        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][3]}}">
+        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][4]}}">
         {% else %}
         <input id="task_due_date" type="date" class="form-control" name="task_due_date">
         {% endif %}
