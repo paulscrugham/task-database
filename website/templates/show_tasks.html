@@ -27,7 +27,7 @@
                 <td>{{ item[5] }} {{ item[6] }}</td>
                 <td>
                     <button onclick="window.location.href='/add_task';" type="button" class="btn btn-primary">Update</button>
-                    <button onclick="window.location.href='/delete_task/{{ item[0] }}';" type="button" class="btn btn-danger">Delete</button>
+                    <button onclick="window.location.href='/delete_task/{{item[0]}}';" type="button" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
             {% endfor %}
