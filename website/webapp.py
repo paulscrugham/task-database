@@ -167,4 +167,5 @@ def update_task(task_id):
         query = 'SELECT * FROM Tasks WHERE task_id = %s;'
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
+        print(results)
         return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id))

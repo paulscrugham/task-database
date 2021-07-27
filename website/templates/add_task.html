@@ -9,7 +9,7 @@
       <div class="mb-3">
         <label for="task_name" class="form-label">Enter a Task name:</label>
         {% if task_data %}
-        <input id="task_name" type="text" class="form-control" name="task_name" value="{{task_data['name']}}">
+        <input id="task_name" type="text" class="form-control" name="task_name" value="{{task_data[1]}}">
         {% else %}
         <input id="task_name" type="text" class="form-control" name="task_name">
         {% endif %}
