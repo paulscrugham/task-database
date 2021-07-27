@@ -17,9 +17,29 @@ def index():
         query = 'SELECT * FROM Tasks;'
         values = execute_query(db_connection, query).fetchall()
         print(values)
-    return render_template('home.html', results=values)
+    return render_template('db_test.html', results=values)
 
 
+# app routes for Landing page
+
+@webapp.route('/')
+def home():
+    return render_template('home.html')
+
+
+@webapp.route('/user_search', methods=['POST'])
+def user_search():
+    db_connection = connect_to_database()
+    search_term = request.form['search_term']
+    search_term = '%' + search_term + '%'  # concatenate %s with search term outside of query
+    query = '''SELECT user_id, first_name, last_name FROM Users WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT(%s);'''
+    data = (search_term,)
+    results = execute_query(db_connection, query, data).fetchall()
+    print(results)
+    return render_template('user_search.html', results=results)
+
+
+test = 'this is a %% string'
 # app routes for Badges page
 
 @webapp.route('/show_badges')

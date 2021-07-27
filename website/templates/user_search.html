@@ -1,0 +1,28 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+
+<div class="container-fluid">
+    <h1 class="display-4">Search Results</h1>
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in results %}
+        <tr>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td>
+              <button type="button" class="btn btn-primary">Select User</button>
+          </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}
