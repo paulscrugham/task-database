@@ -19,7 +19,7 @@
         <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
         <select id="task_status" name="task_status" class="form-select" aria-label="Select A Tag">
-          <option selected></option>
+          <option selected>"{{ task_data[0][2] }}"</option>
           <option value="0">In Progress</option>
           <option value="1">Complete</option>
         </select>
@@ -27,23 +27,39 @@
 
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
+        {% if task_data %}
+        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][3]}}">
+        {% else %}
         <input id="task_due_date" type="date" class="form-control" name="task_due_date">
+        {% endif %}
       </div>
 
       <div class="mb-3">
         <label for="task_time_due" class="form-label">Enter a time due:</label>
+        {% if task_data %}
+        <input id="task_time_due" type="time" class="form-control" name="task_time_due" value="{{task_data[0][4]}}">
+        {% else %}
         <input id="task_time_due" type="time" class="form-control" name="task_time_due">
+        {% endif %}
       </div>
 
       <div class="mb-3">
         <label for="task_pomodoros" class="form-label">Enter a number of Pomodoros:</label>
+        {% if task_data %}
+        <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros" value="{{task_data[0][5]}}">
+        {% else %}
         <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros">
+        {% endif %}
       </div>
 
       <div class="mb-3">
         <label for="task_assigned_user" class="form-label">Enter the assigned User ID:</label>
         <div class="input-group">
-            <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user"/>
+          {% if task_data %}
+          <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user" value="{{task_data[0][0]}}"/>
+          {% else %}
+          <input id="task_assigned_user" type="number" class="form-control rounded" name="task_assigned_user"/>
+          {% endif %}
         </div>
       </div>
       <br>
