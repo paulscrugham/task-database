@@ -140,7 +140,7 @@ def add_task():
         task_name = request.form['task_name']
         task_status = str(request.form['task_status'])
         task_due_date = request.form['task_due_date']
-        task_time_due = request.form['task_time_due']
+        task_time_due = str(request.form['task_time_due'])
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
 
