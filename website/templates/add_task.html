@@ -5,16 +5,16 @@
     <h1 class="display-4">Create/Edit a Task</h1>
     <br>
 
-    <form class="form" action="{{ form_action }}" method="POST">
+    <form class="form" id="add_task_form" action="{{ form_action }}" method="POST">
       <div class="mb-3">
         <label for="task_name" class="form-label">Enter a Task name:</label>
-        <input type="text" class="form-control" id="task_name">
+        <input type="text" class="form-control" name="task_name">
       </div>
 
       <div class="mb-3">
         <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
-        <select id="task_status" class="form-select" aria-label="Select A Tag">
+        <select name="task_status" class="form-select" aria-label="Select A Tag">
           <option selected></option>
           <option value="0">In Progress</option>
           <option value="1">Complete</option>
@@ -23,23 +23,23 @@
 
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
-        <input type="date" class="form-control" id="task_due_date">
+        <input type="date" class="form-control" name="task_due_date">
       </div>
 
       <div class="mb-3">
         <label for="task_time_due" class="form-label">Enter a time due:</label>
-        <input type="time" class="form-control" id="task_time_due">
+        <input type="time" class="form-control" name="task_time_due">
       </div>
 
       <div class="mb-3">
         <label for="task_pomodoros" class="form-label">Enter a number of Pomodoros:</label>
-        <input type="number" class="form-control" id="task_pomodoros">
+        <input type="number" class="form-control" name="task_pomodoros">
       </div>
 
       <div class="mb-3">
         <label for="task_assigned_user" class="form-label">Search for a user by first and last name to assign this task:</label>
         <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="task_assigned_user"/>
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="task_assigned_user"/>
             <button type="button" class="btn btn-outline-primary">Search</button>
         </div>
       </div>
