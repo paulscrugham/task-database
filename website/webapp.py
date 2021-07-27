@@ -158,3 +158,13 @@ def delete_task(task_id):
     data = (task_id,)
     result = execute_query(db_connection, query, data)
     return show_tasks()
+
+
+@webapp.route('/update_task/<int:task_id>', methods=['POST', 'GET'])
+def update_task(task_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT * FROM Tasks WHERE task_id = %s;'
+        data = (task_id,)
+        results = execute_query(db_connection, query, data).fetchall()
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id))
