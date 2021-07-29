@@ -82,7 +82,7 @@ def add_badge():
         query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (%s, %s, %s);'
         data = (badge_name, badge_tag, badge_criteria)
         execute_query(db_connection, query, data)
-        return show_badges()
+        return redirect('/show_badges')
 
 @webapp.route('/delete_badge/<int:id>')
 def delete_badge(id):
@@ -90,7 +90,7 @@ def delete_badge(id):
     query = 'DELETE FROM Badges WHERE badge_id = %s;'
     data = (id,)
     result = execute_query(db_connection, query, data)
-    return show_badges()
+    return redirect('/show_badges')
 
 @webapp.route('/update_badge/<int:id>', methods=['POST', 'GET'])
 def update_badge(id):
@@ -114,7 +114,7 @@ def update_badge(id):
         query = 'UPDATE Badges SET name = %s, tg_id = %s, criteria = %s WHERE badge_id = %s;'
         data = (badge_name, badge_tag, badge_criteria, id)
         execute_query(db_connection, query, data)
-        return show_badges()
+        return redirect('/show_badges')
 
 
 # app routes for Users page
@@ -139,7 +139,7 @@ def add_user():
         query = 'INSERT INTO Users(first_name, last_name) VALUES (%s, %s);'
         data = (user_first_name, user_last_name)
         execute_query(db_connection, query, data)
-        return show_users()
+        return redirect('/show_users')
 
 @webapp.route('/delete_user/<int:id>')
 def delete_user(id):
@@ -147,7 +147,7 @@ def delete_user(id):
     query = 'DELETE FROM Users WHERE user_id = %s;'
     data = (id,)
     execute_query(db_connection, query, data)
-    return show_users()
+    return redirect('/show_users')
 
 @webapp.route('/update_user/<int:id>', methods=['POST', 'GET'])
 def update_user(id):
@@ -165,7 +165,7 @@ def update_user(id):
         query = 'UPDATE Users SET first_name = %s, last_name = %s WHERE user_id = %s'
         data = (user_first_name, user_last_name, id)
         execute_query(db_connection, query, data)
-        return show_users()
+        return redirect('/show_users')
 
 
 # app routes for Tasks page
