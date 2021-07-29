@@ -262,3 +262,34 @@ def delete_tag(tag_id):
     data = (tag_id,)
     result = execute_query(db_connection, query, data)
     return redirect('show_tags')
+
+@webapp.route('/add_tag', methods=['POST', 'GET'])
+def add_tag():
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        return render_template('add_tag.html', form_action='/add_tag')
+
+    elif request.method == 'POST':
+        print('Adding a Tag...')
+        tag_name = request.form['tag_name']
+        query = 'INSERT INTO Tags(name) VALUES (%s);'
+        data = (tag_name,)
+        execute_query(db_connection, query, data)
+        return redirect('show_tags')
+
+@webapp.route('/update_tag/<int:tag_id>', methods=['POST', 'GET'])
+def update_tag(tag_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = "SELECT * FROM Tags WHERE tag_id = %s;"
+        data = (tag_id,)
+        results = execute_query(db_connection, query, data).fetchall()
+        return render_template('add_tag.html', tag_data=results, form_action='/update_tag/' + str(tag_id))
+
+    elif request.method == 'POST':
+        print('Updating Tag', tag_id, '...')
+        tag_name = request.form['tag_name']
+        query = 'UPDATE Tags SET name = %s WHERE tag_id = %s;'
+        data = (tag_name, tag_id)
+        execute_query(db_connection, query, data)
+        return redirect('show_tags')

@@ -1,0 +1,22 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+<div class="container">
+    <h1 class="display-4">Create/Edit a Tag</h1>
+    <br>
+
+    <form class="form" action="{{ form_action }}" method="post">
+      <div class="mb-3">
+        <label for="tag_name" class="form-label">Enter a Tag Name</label>
+        {% if tag_data %}
+        <input type="text" class="form-control" id="tag_name" name="tag_name" value="{{ tag_data[0][1] }}">
+        {% else %}
+        <input type="text" class="form-control" id="tag_name" name="tag_name">
+        {% endif %}
+      </div>
+
+      <br>
+      <input type="submit" class="btn btn-primary"></button>
+    </form>
+
+  </div>
+{% endblock %}
