@@ -210,7 +210,7 @@ def add_task():
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
-        return redirect('show_tasks')
+        return redirect('/show_tasks')
 
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
@@ -218,7 +218,7 @@ def delete_task(task_id):
     query = 'DELETE FROM Tasks WHERE task_id = %s;'
     data = (task_id,)
     result = execute_query(db_connection, query, data)
-    return redirect('show_tasks')
+    return redirect('/show_tasks')
 
 
 @webapp.route('/update_task/<int:task_id>', methods=['POST', 'GET'])
@@ -244,7 +244,7 @@ def update_task(task_id):
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
         execute_query(db_connection, query, data)
-        return redirect('show_tasks')
+        return redirect('/show_tasks')
 
 # app routes for Tags page
 
@@ -261,7 +261,7 @@ def delete_tag(tag_id):
     query = 'DELETE FROM Tags WHERE tag_id = %s;'
     data = (tag_id,)
     result = execute_query(db_connection, query, data)
-    return redirect('show_tags')
+    return redirect('/show_tags')
 
 @webapp.route('/add_tag', methods=['POST', 'GET'])
 def add_tag():
@@ -275,7 +275,7 @@ def add_tag():
         query = 'INSERT INTO Tags(name) VALUES (%s);'
         data = (tag_name,)
         execute_query(db_connection, query, data)
-        return redirect('show_tags')
+        return redirect('/show_tags')
 
 @webapp.route('/update_tag/<int:tag_id>', methods=['POST', 'GET'])
 def update_tag(tag_id):
@@ -292,4 +292,37 @@ def update_tag(tag_id):
         query = 'UPDATE Tags SET name = %s WHERE tag_id = %s;'
         data = (tag_name, tag_id)
         execute_query(db_connection, query, data)
-        return redirect('show_tags')
+        return redirect('/show_tags')
+
+
+# app routes for Tasks_Tags page
+
+@webapp.route('/show_tasks_tags')
+def show_tasks_tags():
+    db_connection = connect_to_database()
+    query = 'SELECT tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id;'
+    results = execute_query(db_connection, query).fetchall()
+    return render_template('show_tasks_tags.html', tasks_tags_data=results)
+
+@webapp.route('/delete_task_tag/<int:task_id>/<int:tag_id>')
+def delete_task_tag(task_id, tag_id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Tags WHERE tk_id = %s AND tg_id = %s;'
+    data = (task_id, tag_id)
+    execute_query(db_connection, query, data)
+    return redirect('/show_tasks_tags')
+
+@webapp.route('/add_task_tag', methods=['POST', 'GET'])
+def add_task_tag():
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        return render_template('add_task_tag.html', form_action='/add_task_tag')
+
+    elif request.method == 'POST':
+        print('Assigning a Task to a Tag...')
+        task_id = request.form['task_id']
+        tag_id = request.form['tag_id']
+        query = 'INSERT INTO Tags(tk_id, tg_id) VALUES (%s, %s);'
+        data = (task_id, tag_id)
+        execute_query(db_connection, query, data)
+        return redirect('/show_tasks_tags')

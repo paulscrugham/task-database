@@ -18,8 +18,8 @@
                 <td>{{ item[0] }}</td>
                 <td>{{ item[1] }}</td>
                 <td>
-                    <button type="button" onclick="window.location='/update_task_tag/{{item[0]}}';" class="btn btn-primary">Update</button>
-                    <button type="button" onclick="window.location='/delete_task_tag/{{item[0]}}';" class="btn btn-danger">Delete</button>
+                    <button type="button" onclick="window.location='/update_task_tag/{{item[0]}}/{{item[1]}}';" class="btn btn-primary">Update</button>
+                    <button type="button" onclick="window.location='/delete_task_tag/{{item[0]}}/{{item[1]}}';" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
             {% endfor %}

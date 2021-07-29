@@ -1,0 +1,26 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+
+  <div class="container">
+    <h1 class="display-4">Assign a Tag to a Task</h1>
+    <br>
+
+    <form class="form" id="add_task_tag_form" action="{{ form_action }}" method="POST">
+
+      <div class="mb-3">
+        <label for="task_id" class="form-label">Enter the ID of a Task entity:</label>
+        <input id="task_id" type="number" class="form-control" name="task_id">
+      </div>
+
+      <div class="mb-3">
+        <label for="tag_id" class="form-label">Enter the ID of a Tag entity:</label>
+        <input id="tag_id" type="number" class="form-control" name="tag_id">
+      </div>
+
+      <br>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  </div>
+
+{% endblock %}
