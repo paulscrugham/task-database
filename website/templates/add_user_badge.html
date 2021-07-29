@@ -1,0 +1,22 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+
+<div class="container">
+    <h1 class="display-4">Manually assign a Badge to {{ user[1] }}</h1>
+    <br>
+
+    <form class="form" action="/add_user_badge/{{ user[0] }}" method="post">
+    {% for item in badges %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="{{ item[0] }}" id="badge_id" name="badge_id" >
+            <label class="form-check-label" for="flexCheckDefault">{{ item[1] }}</label>
+        </div>
+    {% endfor %}
+
+      <br>
+      <input type="submit" class="btn btn-primary"></button>
+    </form>
+
+  </div>
+
+  {% endblock %}

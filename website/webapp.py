@@ -47,11 +47,24 @@ def user_search():
 @webapp.route('/user_main_page/<int:id>')
 def user_main_page(id):
     db_connection = connect_to_database()
-    query = 'SELECT first_name, last_name FROM Users WHERE user_id = %s;'
+
+    # query to select User's name and id
+    query = 'SELECT * FROM Users WHERE user_id = %s;'
     data = (id,)
     user = execute_query(db_connection, query, data).fetchone()
-    print(user)
-    return render_template('user_main_page.html', user=user)
+
+    # query to select User's badges
+    query = 'SELECT badges.name AS Badge FROM Users_Badges u_b JOIN Users users ON u_b.ur_id = users.user_id JOIN Badges badges ON u_b.be_id = badges.badge_id WHERE users.user_id=%s;'
+    data = (id,)
+    badges = execute_query(db_connection, query, data).fetchall()
+
+    # query to select three in-progress tasks
+    query = 'SELECT * FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0;'
+    data = (id,)
+    tasks = execute_query(db_connection, query, data).fetchall()
+    print(tasks)
+
+    return render_template('user_main_page.html', user=user, badges=badges)
 
 
 # app routes for Badges page
@@ -176,8 +189,35 @@ def show_users_badges():
     print(results)
     return render_template('show_users_badges.html', users_badges=results)
 
-# @webapp.route('/delete_user_badge')
-# def delete_user_badge()
+@webapp.route('/delete_user_badge/<int:user_id>/<int:badge_id>')
+def delete_user_badge(user_id, badge_id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Users_Badges WHERE ur_id = %s AND be_id = %s;'
+    data = (user_id, badge_id)
+    execute_query(db_connection, query, data)
+    return redirect('/show_users_badges')
+
+@webapp.route('/add_user_badge/<int:user_id>', methods=['POST', 'GET'])
+def add_user_badge(user_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT * FROM Badges;'
+        badges = execute_query(db_connection, query).fetchall()
+        query = 'SELECT * FROM Users WHERE user_id = %s;'
+        data = (user_id,)
+        user = execute_query(db_connection, query, data).fetchone()
+        print(user)
+        return render_template('add_user_badge.html', badges=badges, user=user)
+    elif request.method == 'POST':
+        print('Assigning a Badge...')
+        badge_id = request.form['badge_id']
+        query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
+        data = (user_id, badge_id)
+        execute_query(db_connection, query, data)
+        return redirect('/user_main_page/' + str(user_id))
+
+
+
 
 
 # app routes for Tasks page
