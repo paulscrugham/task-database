@@ -130,7 +130,7 @@ def show_users():
 def add_user():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_user.html')
+        return render_template('add_user.html', form_action='/add_user')
     if request.method == 'POST':
         print('Adding a User...')
         user_first_name = request.form['user_first_name']

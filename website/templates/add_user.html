@@ -8,7 +8,7 @@
       <div class="mb-3">
         <label for="user_first_name" class="form-label">Enter a User's first name (30 characters max):</label>
         {% if user %}
-        <input type="text" class="form-control" id="user_first_name" name="user_first_name" value="{{ user[0][1] }}">
+        <input type="text" class="form-control" id="user_first_name" name="user_first_name" value="{{ user[0][0] }}">
         {% else %}
         <input type="text" class="form-control" id="user_first_name" name="user_first_name">
         {% endif %}
@@ -17,7 +17,7 @@
       <div class="mb-3">
         <label for="user_last_name" class="form-label">Enter a User's last name (30 characters max):</label>
         {% if user %}
-        <input type="text" class="form-control" id="user_last_name" name="user_last_name" value="{{ user[0][2] }}">
+        <input type="text" class="form-control" id="user_last_name" name="user_last_name" value="{{ user[0][1] }}">
         {% else %}
         <input type="text" class="form-control" id="user_last_name" name="user_last_name">
         {% endif %}
