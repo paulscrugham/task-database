@@ -285,7 +285,7 @@ def update_tag(tag_id):
 
     elif request.method == 'POST':
         print('Updating Tag', tag_id, '...')
-        tag_name = request.form['task_name']
+        tag_name = request.form['tag_name']
         query = 'UPDATE Tags SET name = %s WHERE tag_id = %s;'
         data = (tag_name, tag_id)
         execute_query(db_connection, query, data)
