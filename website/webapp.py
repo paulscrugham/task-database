@@ -2,7 +2,6 @@ from flask import Flask, render_template
 from flask import request, redirect
 from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
-import requests
 #create the web application
 webapp = Flask(__name__)
 
@@ -198,7 +197,7 @@ def add_task():
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
-        return show_tasks()
+        return redirect('show_tasks')
 
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
@@ -206,7 +205,7 @@ def delete_task(task_id):
     query = 'DELETE FROM Tasks WHERE task_id = %s;'
     data = (task_id,)
     result = execute_query(db_connection, query, data)
-    return show_tasks()
+    return redirect('show_tasks')
 
 
 @webapp.route('/update_task/<int:task_id>', methods=['POST', 'GET'])
@@ -232,4 +231,4 @@ def update_task(task_id):
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
         execute_query(db_connection, query, data)
-        return requests.get('/show_tasks')
+        return redirect('show_tasks')
