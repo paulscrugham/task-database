@@ -171,10 +171,13 @@ def update_user(id):
 @webapp.route('/show_users_badges')
 def show_users_badges():
     db_connection = connect_to_database()
-    query = 'SELECT users.first_name AS User, badges.name AS Badge FROM Users_Badges u_b JOIN Users users ON u_b.ur_id = users.user_id JOIN Badges badges ON u_b.be_id = badges.badge_id;'
+    query = 'SELECT users.first_name, badges.name, users.user_id, badges.badge_id FROM Users_Badges u_b JOIN Users users ON u_b.ur_id = users.user_id JOIN Badges badges ON u_b.be_id = badges.badge_id;'
     results = execute_query(db_connection, query).fetchall()
     print(results)
     return render_template('show_users_badges.html', users_badges=results)
+
+# @webapp.route('/delete_user_badge')
+# def delete_user_badge()
 
 
 # app routes for Tasks page
