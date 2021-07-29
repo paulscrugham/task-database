@@ -1,0 +1,30 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+<div class="container-fluid">
+
+    <h1 class="display-4">Browse all Tags assigned to Tasks</h1>
+
+    <button onclick="window.location.href='/add_user';" type="button" class="btn btn-primary">Assign a Tag to a Task</button>
+
+    <table class="table">
+        <thead>
+            <th>Task (FK)</th>
+            <th>Tag (FK)</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for item in tasks_tags_data %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>
+                    <button type="button" onclick="window.location='/update_task_tag/{{item[0]}}';" class="btn btn-primary">Update</button>
+                    <button type="button" onclick="window.location='/delete_task_tag/{{item[0]}}';" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+  </div>
+{% endblock %}
