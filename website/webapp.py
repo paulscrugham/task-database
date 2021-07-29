@@ -340,7 +340,7 @@ def update_tag(tag_id):
 @webapp.route('/show_tasks_tags')
 def show_tasks_tags():
     db_connection = connect_to_database()
-    query = 'SELECT tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id;'
+    query = 'SELECT tk_id AS task_id, tg_id AS tag_id, tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id;'
     results = execute_query(db_connection, query).fetchall()
     return render_template('show_tasks_tags.html', tasks_tags_data=results)
 
