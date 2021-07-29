@@ -242,3 +242,20 @@ def update_task(task_id):
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
         execute_query(db_connection, query, data)
         return redirect('show_tasks')
+
+# app routes for Tags page
+
+@webapp.route('/show_tags')
+def show_tags():
+    db_connection = connect_to_database()
+    query = 'SELECT * FROM Tags;'
+    results = execute_query(db_connection, query).fetchall()
+    return render_template('show_tags.html', tags=results)
+
+@webapp.route('/delete_tag/<int:tag_id>')
+def delete_tag(tag_id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Tags WHERE tag_id = %s;'
+    data = (tag_id,)
+    result = execute_query(db_connection, query, data)
+    return redirect('show_tags')

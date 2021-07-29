@@ -1,0 +1,31 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+<div class="container-fluid">
+
+    <h1 class="display-4">Browse all Tags</h1>
+
+    <button onclick="window.location.href='/add_tag';" type="button" class="btn btn-primary">Create a new Tag</button>
+
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for item in tags %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>
+                    <button onclick="window.location.href='/update_tag/{{item[0]}}';" type="button" class="btn btn-primary">Update</button>
+                    <button onclick="window.location.href='/delete_tag/{{item[0]}}';" type="button" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+  </div>
+{% endblock %}
