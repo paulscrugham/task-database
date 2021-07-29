@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask import request, redirect
 from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
+import requests
 #create the web application
 webapp = Flask(__name__)
 
@@ -185,8 +186,6 @@ def add_task():
 
     elif request.method == 'POST':
         print('Adding a Task...')
-        print(request.form['task_name'])
-        print(request.form['task_time_due'])
         task_name = request.form['task_name']
         task_status = str(request.form['task_status'])
         task_due_date = request.form['task_due_date']
@@ -217,5 +216,20 @@ def update_task(task_id):
         query = "SELECT task_id, name, status, CAST(due_date AS DATE), pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
-        print(results)
         return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id))
+
+    elif request.method == 'POST':
+        print('Updating Task', task_id, '...')
+        task_name = request.form['task_name']
+        task_status = str(request.form['task_status'])
+        task_due_date = request.form['task_due_date']
+        task_time_due = str(request.form['task_time_due'])
+        task_pomodoros = request.form['task_pomodoros']
+        task_assigned_user = request.form['task_assigned_user']
+
+        query = 'UPDATE Tasks SET name = %s, status = %s, due_date = %s, pomodoros = %s, assigned_user = %s WHERE task_id = %s;'
+        task_due = str(task_due_date) + ' ' + str(task_time_due)
+        print('task_due: ', task_due)
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
+        execute_query(db_connection, query, data)
+        return requests.get('/show_tasks')
