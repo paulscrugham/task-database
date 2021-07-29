@@ -347,7 +347,7 @@ def show_tasks_tags():
 @webapp.route('/delete_task_tag/<int:task_id>/<int:tag_id>')
 def delete_task_tag(task_id, tag_id):
     db_connection = connect_to_database()
-    query = 'DELETE FROM Tags WHERE tk_id = %s AND tg_id = %s;'
+    query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s AND tg_id = %s;'
     data = (task_id, tag_id)
     execute_query(db_connection, query, data)
     return redirect('/show_tasks_tags')
@@ -362,7 +362,7 @@ def add_task_tag():
         print('Assigning a Task to a Tag...')
         task_id = request.form['task_id']
         tag_id = request.form['tag_id']
-        query = 'INSERT INTO Tags(tk_id, tg_id) VALUES (%s, %s);'
+        query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
         data = (task_id, tag_id)
         execute_query(db_connection, query, data)
         return redirect('/show_tasks_tags')
