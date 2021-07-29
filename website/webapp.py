@@ -272,7 +272,7 @@ def add_tag():
         query = 'INSERT INTO Tags(name) VALUES (%s);'
         data = (tag_name,)
         execute_query(db_connection, query, data)
-        return redirect('show_tasks')
+        return redirect('show_tags')
 
 @webapp.route('/update_tag/<int:tag_id>', methods=['POST', 'GET'])
 def update_tag(tag_id):
