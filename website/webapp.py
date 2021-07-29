@@ -116,6 +116,56 @@ def update_badge(id):
         return show_badges()
 
 
+# app routes for Users page
+
+@webapp.route('/show_users')
+def show_users():
+    db_connection = connect_to_database()
+    query = 'SELECT * FROM Users;'
+    results = execute_query(db_connection, query).fetchall()
+    print(results)
+    return render_template('show_users.html', users=results)
+
+@webapp.route('/add_user', methods=['POST', 'GET'])
+def add_user():
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        return render_template('add_user.html')
+    if request.method == 'POST':
+        print('Adding a User...')
+        user_first_name = request.form['user_first_name']
+        user_last_name = request.form['user_last_name']
+        query = 'INSERT INTO Users(first_name, last_name) VALUES (%s, %s);'
+        data = (user_first_name, user_last_name)
+        execute_query(db_connection, query, data)
+        return show_users()
+
+@webapp.route('/delete_user/<int:id>')
+def delete_user(id):
+    db_connection = connect_to_database()
+    query = 'DELETE FROM Users WHERE user_id = %s;'
+    data = (id,)
+    execute_query(db_connection, query, data)
+    return show_users()
+
+@webapp.route('/update_user/<int:id>', methods=['POST', 'GET'])
+def update_user(id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT first_name, last_name FROM Users WHERE user_id = %s;'
+        data = (id,)
+        user = execute_query(db_connection, query, data).fetchall()
+        return render_template('add_user.html', user=user, form_action='/update_user/' + str(id))
+    
+    elif request.method == 'POST':
+        print('Updating User', id, '...')
+        user_first_name = request.form['user_first_name']
+        user_last_name = request.form['user_last_name']
+        query = 'UPDATE Users SET first_name = %s, last_name = %s WHERE user_id = %s'
+        data = (user_first_name, user_last_name, id)
+        execute_query(db_connection, query, data)
+        return show_users()
+
 
 # app routes for Tasks page
 
