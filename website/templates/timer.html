@@ -74,7 +74,6 @@
     <div class="row">
         <div class="col">
             <h1 class="display-1 text-center"><span id="minutes">00</span>:<span id="seconds">00</span></h1>
-
         </div>
     </div>
     <div class="row">
@@ -85,14 +84,14 @@
     <br>
     <div class="row">
         <div class="col">
-            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Mark current task complete</button>
+            <button onclick="window.location.href='/complete_task/{{ task[0] }}/{{ task[2] }}';" type="button" class="btn btn-primary position-absolute top-50 start-50">Mark current task complete</button>
         </div>
         <div class="col">
-            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Leave task incomplete</button>
+            <button onclick="window.location.href='/user_main_page/{{ task[2] }}';" type="button" class="btn btn-primary position-absolute top-50 start-50">Leave task incomplete</button>
         </div>
         <div class="col">
             <button onclick="countdown();" type="button" class="btn btn-primary position-absolute top-50 start-50">Start Pomodoro Timer</button>
         </div>
     </div>
-  </div>
+</div>
 {% endblock %}
