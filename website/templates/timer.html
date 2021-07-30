@@ -2,16 +2,24 @@
 {% block body %}
 
 <script>
-    //set minutes
-    var mins = 25;
+    //set duration of one pomodoro
+    var pomodoro_len = 25;
+
+    //set duration of short breaks
+    var short_break = 5;
+
+    //set duration of long breaks
+    var long_break = 15;
 
     //calculate the seconds
-    var secs = mins * 60;
+    var secs = pomodoro_len * 60;
 
     //countdown function is evoked when page is loaded
     function countdown() {
         setTimeout('Decrement()', 60);
     }
+
+    var cur_activity = "work";
 
     //Decrement function decrement the value.
     function Decrement() {
@@ -35,13 +43,13 @@
             //when less than a minute remaining
             //colour of the minutes and seconds
             //changes to red
-            if (mins < 5) {
+            if (pomodoro_len < 5) {
                 minutes.style.color = "red";
                 seconds.style.color = "red";
             }
             //if seconds becomes zero,
             //then page alert time up
-            if (mins < 0) {
+            if (pomodoro_len < 0) {
                 alert('time up');
                 minutes.value = 0;
                 seconds.value = 0;
@@ -78,19 +86,28 @@
     </div>
     <div class="row">
         <div class="col">
-            <h1 class="display-5 text-center">Pomodoros Completed 0/{{ task[5] }}</h2>
+            <h1 class="display-5 text-center">Pomodoros Completed <span id="pomodoros">0</span>/{{ task[5] }}</h2>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col">
-            <button onclick="window.location.href='/complete_task/{{ task[0] }}/{{ task[2] }}';" type="button" class="btn btn-primary position-absolute top-50 start-50">Mark current task complete</button>
+            <button onclick="window.location.href='/complete_task/{{ task[0] }}/{{ task[2] }}';" 
+                type="button" class="btn btn-primary position-absolute top-50 start-50">
+                Mark current task complete
+            </button>
         </div>
         <div class="col">
-            <button onclick="window.location.href='/user_main_page/{{ task[2] }}';" type="button" class="btn btn-primary position-absolute top-50 start-50">Leave task incomplete</button>
+            <button onclick="window.location.href='/user_main_page/{{ task[2] }}';" 
+                type="button" class="btn btn-primary position-absolute top-50 start-50">
+                Leave task incomplete
+            </button>
         </div>
         <div class="col">
-            <button onclick="countdown();" type="button" class="btn btn-primary position-absolute top-50 start-50">Start Pomodoro Timer</button>
+            <button onclick="countdown();" type="button" 
+                class="btn btn-primary position-absolute top-50 start-50">
+                Start Pomodoro Timer
+            </button>
         </div>
     </div>
 </div>

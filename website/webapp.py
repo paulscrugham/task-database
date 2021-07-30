@@ -87,7 +87,7 @@ def complete_task(task_id, user_id):
     db_connection = connect_to_database()
     query = 'UPDATE Tasks SET status=1 WHERE task_id=%s;'
     data = (task_id,)
-    task = execute_query(db_connection, query, data).fetchone()
+    task = execute_query(db_connection, query, data)
     print(task)
     return redirect('/user_main_page/' + str(user_id))
 
