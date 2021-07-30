@@ -69,7 +69,7 @@ def user_main_page(id):
         tasks_data[str(item[0])].append(str(item[1]))
     print('tasks_data: ', tasks_data)
 
-    return render_template('user_main_page.html', user=user, badges=badges)
+    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data)
 
 # app routes for Timer Page
 
