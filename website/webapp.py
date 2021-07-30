@@ -230,6 +230,15 @@ def show_tasks():
     print(results)
     return render_template('show_tasks.html', tasks=results)
 
+@webapp.route('/show_tasks/<int:user_id>')
+def show_user_tasks(user_id):
+    db_connection = connect_to_database()
+    query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id WHERE u.user_id=%s;'
+    data = (user_id,)
+    results = execute_query(db_connection, query, data).fetchall()
+    print(results)
+    return render_template('show_tasks.html', tasks=results)
+
 @webapp.route('/add_task', methods=['POST', 'GET'])
 def add_task():
     db_connection = connect_to_database()
