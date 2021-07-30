@@ -9,27 +9,16 @@
     <h3>Upcoming Tasks</h3>
     <table class="table">
       <tr>
+        {% for task in tasks_data %}
         <td>
-          Complete homework assignment #4
+          {{ task }}
           <ul>
-            <li>High Priority</li>
-            <li>School</li>
+            {% for tag in task %}
+            <li>tag</li>
+            {% endfor %}
           </ul>
         </td>
-        <td>
-          Finish project requirements document
-          <ul>
-            <li>High Priority</li>
-            <li>Work</li>
-          </ul>
-        </td>
-        <td>
-          Come up with new song ideas
-          <ul>
-            <li>Low Priority</li>
-            <li>Personal</li>
-          </ul>
-        </td>
+        {% endfor %}
       </tr>
     </table>
   </div>
