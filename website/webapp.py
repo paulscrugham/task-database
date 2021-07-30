@@ -69,7 +69,7 @@ def user_main_page(id):
         if str(item[0]) not in tasks_data.keys():
             tasks_data[str(item[0])] = []
         tasks_data[str(item[0])].append(str(item[1]))
-    tasks_data = islice.take(3, tasks_data.items())  # only take the fist 3 tasks
+    tasks_data = {key: tasks_data[key] for key in list(tasks_data)[:3]}  # only take the fist 3 tasks
     print('tasks_data: ', tasks_data)
 
     return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data)
