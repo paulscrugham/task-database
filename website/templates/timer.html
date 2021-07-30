@@ -2,24 +2,29 @@
 {% block body %}
 
 <script>
-    //set duration of one pomodoro
-    var pomodoro_len = 25;
+    //initialize session to work
+    var session = "work";
 
-    //set duration of short breaks
-    var short_break = 5;
+    //set duration of sessions in minutes
+    var pomo_len = .2;
+    var break_len = .1;
 
-    //set duration of long breaks
-    var long_break = 15;
+    // get the number of pomodoros associated with the task
+    var total_pomos = parseInt('{{ task[5] }}');
+
+    // counter to track the number of completed pomodoros
+    var completed_pomos = 0;
+
+    // initialize mins to pomo_len
+    var mins = pomo_len;
 
     //calculate the seconds
-    var secs = pomodoro_len * 60;
+    var secs = mins * 60;
 
     //countdown function is evoked when page is loaded
     function countdown() {
         setTimeout('Decrement()', 60);
     }
-
-    var cur_activity = "work";
 
     //Decrement function decrement the value.
     function Decrement() {
@@ -43,16 +48,32 @@
             //when less than a minute remaining
             //colour of the minutes and seconds
             //changes to red
-            if (pomodoro_len < 5) {
-                minutes.style.color = "red";
-                seconds.style.color = "red";
+            if (mins < 5 && session == "work") {
+                timer.style.color = "red";
             }
             //if seconds becomes zero,
             //then page alert time up
-            if (pomodoro_len < 0) {
-                alert('time up');
-                minutes.value = 0;
-                seconds.value = 0;
+            if (mins < 0) {
+                minutes.innerHTML = 0;
+                seconds.innerHTML = 0;
+
+                // conditionals to check when a break is needed
+                if (completed_pomos < total_pomos) {
+                    if (session = "work") {
+                        completed_pomos++;
+                        document.getElementById('pomodoros').innerHTML = completed_pomos;
+                        mins = break_len;
+                        secs = mins * 60;
+                        session = "break";
+                    } else if (session = "break") {
+                        mins = pomo_len;
+                        secs = mins * 60;
+                        session = "work";
+                    }
+
+                    setTimeout('Decrement()', 60);
+                }
+
             }
             //if seconds > 0 then seconds is decremented
             else {
@@ -81,12 +102,12 @@
 
     <div class="row">
         <div class="col">
-            <h1 class="display-1 text-center"><span id="minutes">00</span>:<span id="seconds">00</span></h1>
+            <h1 id="timer" class="display-1 text-center"><span id="minutes">00</span>:<span id="seconds">00</span></h1>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <h1 class="display-5 text-center">Pomodoros Completed <span id="pomodoros">0</span>/{{ task[5] }}</h2>
+            <h1 class="display-5 text-center">Completed Pomodoros: <span id="pomodoros">0</span>/{{ task[5] }}</h2>
         </div>
     </div>
     <br>
