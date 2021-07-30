@@ -59,7 +59,7 @@ def user_main_page(id):
     badges = execute_query(db_connection, query, data).fetchall()
 
     # query to select three in-progress tasks
-    query = 'SELECT Tasks.name, Tags.name FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 LIMIT 3;'
+    query = 'SELECT Tasks.name, Tags.name FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
     print('results: ', results)
@@ -68,6 +68,7 @@ def user_main_page(id):
         if str(item[0]) not in tasks_data.keys():
             tasks_data[str(item[0])] = []
         tasks_data[str(item[0])].append(str(item[1]))
+    tasks_data = tasks_data[3:]  # only take the fist 3 tasks
     print('tasks_data: ', tasks_data)
 
     return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data)
