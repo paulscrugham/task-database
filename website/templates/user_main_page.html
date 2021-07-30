@@ -9,11 +9,11 @@
     <h3>Upcoming Tasks</h3>
     <table class="table">
       <tr>
-        {% for task in tasks_data %}
+        {% for task, tags in tasks_data.items %}
         <td>
           {{ task }}
           <ul>
-            {% for tag in tasks_data.task %}
+            {% for tag in tags %}
             <li>{{ tag }}</li>
             {% endfor %}
           </ul>
