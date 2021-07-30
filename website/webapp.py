@@ -66,6 +66,16 @@ def user_main_page(id):
 
     return render_template('user_main_page.html', user=user, badges=badges)
 
+# app routes for Timer Page
+
+@webapp.route('/timer/<int:id>')
+def timer(id):
+    db_connection = connect_to_database()
+    query = 'SELECT * FROM Tasks WHERE task_id=%s;'
+    data = (id,)
+    task = execute_query(db_connection, query, data).fetchone()
+    return render_template('timer.html', task=task)
+
 
 # app routes for Badges page
 
