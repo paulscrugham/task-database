@@ -74,6 +74,7 @@ def timer(id):
     query = 'SELECT * FROM Tasks WHERE task_id=%s;'
     data = (id,)
     task = execute_query(db_connection, query, data).fetchone()
+    print(task)
     return render_template('timer.html', task=task)
 
 

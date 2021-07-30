@@ -3,7 +3,7 @@
 
 <script>
     //set minutes
-    var mins = 2;
+    var mins = 25;
 
     //calculate the seconds
     var secs = mins * 60;
@@ -29,13 +29,13 @@
             //getminutes and getseconds is used to
             //get minutes and seconds
             else {
-                minutes.value = getminutes();
-                seconds.value = getseconds();
+                minutes.innerHTML = getminutes();
+                seconds.innerHTML = getseconds();
             }
             //when less than a minute remaining
             //colour of the minutes and seconds
             //changes to red
-            if (mins < 1) {
+            if (mins < 5) {
                 minutes.style.color = "red";
                 seconds.style.color = "red";
             }
@@ -68,62 +68,30 @@
 </script>
 
 
+<div class="container">
+    <h1 class="display-5 text-center">Current task: {{ task[1] }}</h1>
 
-
-
-<!-- <div class="container">
     <div class="row">
+        <div class="col">
+            <h1 class="display-1 text-center"><span id="minutes">00</span>:<span id="seconds">00</span></h1>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-5 text-center">Pomodoros Completed 0/{{ task[5] }}</h2>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Mark current task complete</button>
+        </div>
+        <div class="col">
+            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Leave task incomplete</button>
+        </div>
         <div class="col">
             <button onclick="countdown();" type="button" class="btn btn-primary position-absolute top-50 start-50">Start Pomodoro Timer</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            Time Left ::
-            <input id="minutes" type="text" style="width: 10px;
-                border: none; font-size: 16px; 
-                font-weight: bold; color: black;"><font size="5"> :
-                            </font>
-            <input id="seconds" type="text" style="width: 20px;
-                            border: none; font-size: 16px;
-                            font-weight: bold; color: black;">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Mark current task complete and return to user page</button>
-        </div>
-        <div class="col">
-            <button onclick="window.location.href='user_main_page.html';" type="button" class="btn btn-primary position-absolute top-50 start-50">Leave task incomplete and return to user page</button>
-        </div>
-    </div>
-</div> -->
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-        1 of 1
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-        1 of 3
-        </div>
-        <div class="col">
-        2 of 3
-        </div>
-        <div class="col">
-        3 of 3
-    </div>
-    <div class="row">
-        <div class="col">
-            1 of 3
-        </div>
-        <div class="col">
-            2 of 3
-        </div>
-        <div class="col">
-            3 of 3
         </div>
     </div>
   </div>
