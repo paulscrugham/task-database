@@ -72,15 +72,21 @@ def user_main_page(id):
     tasks_data = {key: tasks_data[key] for key in list(tasks_data)[:3]}  # only take the fist 3 tasks
     print('tasks_data: ', tasks_data)
 
-    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data)
+    #query to select all in-progress tasks for User
+    query = 'SELECT task_id, name, due_date FROM Tasks WHERE assigned_user=%s ORDER BY due_date;'
+    data = (id,)
+    open_tasks = execute_query(db_connection, query, data).fetchall()
+
+    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data, open_tasks=open_tasks)
 
 # app routes for Timer Page
 
-@webapp.route('/timer/<int:id>')
-def timer(id):
+@webapp.route('/timer', methods=['POST'])
+def timer():
+    selected_task = request.form['selected_task']
     db_connection = connect_to_database()
     query = 'SELECT * FROM Tasks WHERE task_id=%s;'
-    data = (id,)
+    data = (selected_task,)
     task = execute_query(db_connection, query, data).fetchone()
     print(task)
     return render_template('timer.html', task=task)

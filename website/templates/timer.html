@@ -6,8 +6,8 @@
     var session = "work";
 
     //set duration of sessions in minutes
-    var pomo_len = .2;
-    var break_len = .1;
+    var pomo_len = 0.2;
+    var break_len = 0.1;
 
     // get the number of pomodoros associated with the task
     var total_pomos = parseInt('{{ task[5] }}');
@@ -23,6 +23,7 @@
 
     //countdown function is evoked when page is loaded
     function countdown() {
+        session_message.innerHTML = "Start working!";
         setTimeout('Decrement()', 60);
     }
 
@@ -59,21 +60,26 @@
 
                 // conditionals to check when a break is needed
                 if (completed_pomos < total_pomos) {
-                    if (session = "work") {
+                    if (session == "work") {
                         completed_pomos++;
                         document.getElementById('pomodoros').innerHTML = completed_pomos;
-                        mins = break_len;
-                        secs = mins * 60;
-                        session = "break";
-                    } else if (session = "break") {
+                        if (total_pomos == completed_pomos) {
+                            session_message.innerHTML = "Time is up!";
+                        } else {
+                            mins = break_len;
+                            secs = mins * 60;
+                            session = "break";
+                            session_message.innerHTML = "Take a break.";
+                        }
+                    } else {
                         mins = pomo_len;
                         secs = mins * 60;
                         session = "work";
+                        session_message.innerHTML = "Start working!";
                     }
-
+                    timer.style.color = "black";
                     setTimeout('Decrement()', 60);
                 }
-
             }
             //if seconds > 0 then seconds is decremented
             else {
@@ -103,6 +109,11 @@
     <div class="row">
         <div class="col">
             <h1 id="timer" class="display-1 text-center"><span id="minutes">00</span>:<span id="seconds">00</span></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 id="session_message" class="display-5 text-center">Start the timer when you are ready</h1>
         </div>
     </div>
     <div class="row">

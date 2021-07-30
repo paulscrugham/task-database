@@ -42,21 +42,20 @@
   <br><br>
 
   <div class="container">
-    <form class="form">
-
+    <form class="form" action='/timer' method='post'>
       <div class="mb-3">
-        <label for="badge_tag" class="form-label">Select a task to start timing:</label>
+        <label for="selected_task" class="form-label">Select a task to start timing:</label>
         <br>
-        <select id="badge_tag" class="form-select" aria-label="Select A Tag">
+        <select id="selected_task" class="form-select" aria-label="Select A Task" name="selected_task">
           <option selected>None</option>
-          <option value="1">Complete homework assignment #4</option>
-          <option value="2">Finish project requirements document</option>
-          <option value="3">Come up with new song ideas</option>
+          {% for item in open_tasks %}
+          <option value="{{ item[0] }}">{{ item[1] }}</option>
+          {% endfor %}
         </select>
       </div>
 
       <br>
-      <button type="button" onclick="window.location.href='/timer/4';" class="btn btn-primary">Start Pomodoros</button>
+      <button type="submit" class="btn btn-primary">Start Pomodoros</button>
     </form>
   </div>
 
