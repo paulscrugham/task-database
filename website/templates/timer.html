@@ -2,6 +2,9 @@
 {% block body %}
 
 <script>
+    // Timer script adapted from: https://www.geeksforgeeks.org/javascript-timer/
+    // Date: 7/30/2021
+
     //initialize session to work
     var session = "work";
 
@@ -27,33 +30,29 @@
         setTimeout('Decrement()', 60);
     }
 
-    //Decrement function decrement the value.
+    // recursively decrements the current time until 
+    // all pomodoros are used
     function Decrement() {
         if (document.getElementById) {
             minutes = document.getElementById("minutes");
             seconds = document.getElementById("seconds");
 
-            //if less than a minute remaining
-            //Display only seconds value.
             if (seconds < 59) {
                 seconds.value = secs;
             }
 
             //Display both minutes and seconds
-            //getminutes and getseconds is used to
-            //get minutes and seconds
+            //The getminutes function call updates the mins variable
             else {
                 minutes.innerHTML = getminutes();
                 seconds.innerHTML = getseconds();
             }
-            //when less than a minute remaining
-            //colour of the minutes and seconds
-            //changes to red
+            //change timer color to red if less than 5 minutes remain
+            // and the current session is work
             if (mins < 5 && session == "work") {
                 timer.style.color = "red";
             }
-            //if seconds becomes zero,
-            //then page alert time up
+            // case when timer runs out
             if (mins < 0) {
                 minutes.innerHTML = 0;
                 seconds.innerHTML = 0;
@@ -81,7 +80,7 @@
                     setTimeout('Decrement()', 60);
                 }
             }
-            //if seconds > 0 then seconds is decremented
+            // keep decrementing secs until less than 0
             else {
                 secs--;
                 setTimeout('Decrement()', 1000);
@@ -90,7 +89,7 @@
     }
 
     function getminutes() {
-        //minutes is seconds divided by 60, rounded down
+        // update the mins variable with secs value
         mins = Math.floor(secs / 60);
         return mins;
     }
