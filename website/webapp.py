@@ -251,9 +251,6 @@ def add_user_badge(user_id):
         return redirect('/user_main_page/' + str(user_id))
 
 
-
-
-
 # app routes for Tasks page
 
 @webapp.route('/show_tasks')
