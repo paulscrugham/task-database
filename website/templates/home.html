@@ -7,13 +7,17 @@
         From the SlowTypists Team
     </p>
 
-    <p>Search for a user (click search to see a preview of the user main page)</p>
-
     <form class="form" action="/user_search" method ="post">
-        <div class="mb-3">
-            <input type="text" class="form-control rounded" placeholder="Search" aria-label="Search"
-            aria-describedby="search-addon" name="search_term"/>
-            <button type="submit" class="btn btn-outline-primary">Search</button>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <input type="text" class="form-control rounded" placeholder="Search for a user (enter a blank search to see all users)" aria-label="Search"
+                    aria-describedby="search-addon" name="search_term"/>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
         </div>
     </form>
     
