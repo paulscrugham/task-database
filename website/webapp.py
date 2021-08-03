@@ -259,6 +259,12 @@ def show_tasks():
     query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;'
     results = execute_query(db_connection, query).fetchall()
     print(results)
+    for item in results:
+        if item[2] == 0:
+            item[2] = "In Progress"
+        elif item[2] == 1:
+            item[2] = "Complete"
+    print(results)
     return render_template('show_tasks.html', tasks=results)
 
 @webapp.route('/show_tasks/<int:user_id>')
