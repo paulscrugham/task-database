@@ -21,12 +21,11 @@
             <tr>
                 <td>{{ item[0] }}</td>
                 <td>{{ item[1] }}</td>
-                <td>
-                    {% if item[2] == 0 %}
-                        In Progress
-                    {% elif item[2] == 1 %}
-                        Complete
-                    {% endif %}
+                {% if item[2] == 0 %}
+                <td>In Progress</td>
+                {% elif item[2] == 1 %}
+                <td>Complete</td>
+                {% endif %}
                 </td>
                 <td>{{ item[3] }}</td>
                 <td>{{ item[4] }}</td>
