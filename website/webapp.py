@@ -60,24 +60,56 @@ def user_main_page(id):
     badges = execute_query(db_connection, query, data).fetchall()
 
     # query to select three in-progress tasks
-    query = 'SELECT Tasks.name, Tags.name FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
+    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
     print('results: ', results)
     tasks_data = {}
+    tasks_ids = []
     for item in results:
         if str(item[0]) not in tasks_data.keys():
             tasks_data[str(item[0])] = []
+            tasks_ids.append(item[2])
         tasks_data[str(item[0])].append(str(item[1]))
     tasks_data = {key: tasks_data[key] for key in list(tasks_data)[:3]}  # only take the fist 3 tasks
     print('tasks_data: ', tasks_data)
+    print('tasks_ids: ', tasks_ids)
 
     #query to select all in-progress tasks for User
     query = 'SELECT task_id, name, due_date FROM Tasks WHERE assigned_user=%s ORDER BY due_date;'
     data = (id,)
     open_tasks = execute_query(db_connection, query, data).fetchall()
 
-    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data, open_tasks=open_tasks)
+    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data, open_tasks=open_tasks, tasks_ids=tasks_ids)
+
+
+@webapp.route('/add_task_tag_user/<int:task_id>', methods=['POST', 'GET'])
+def add_task_tag_user(task_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        # query DB for tags associated with task
+        query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
+        data = (task_id,)
+        queried_tags = execute_query(db_connection, query, data).fetchall()
+        selected_tags = []
+        for tup in queried_tags:
+            selected_tags.append(tup[0])
+        print(selected_tags)
+        # query DB for all tag names and IDs
+        query = 'SELECT tag_id, name FROM Tags;'
+        all_tags = execute_query(db_connection, query).fetchall()
+        print(all_tags)
+        query = 'SELECT name FROM Tasks WHERE task_id=%s;'
+        data = (task_id,)
+        task_name = execute_query(db_connection, query, data).fetchone()
+        print(task_name)
+        return render_template('add_task_tag_user.html', selected_tags=selected_tags, all_tags=all_tags, task_name=task_name)
+    if request.method == 'POST':
+        print('Updating Tags for a Task...')
+        
+
+
+
 
 # app routes for Timer Page
 

@@ -17,6 +17,7 @@
             <li>{{ tag }}</li>
             {% endfor %}
           </ul>
+          <button type="button" class="btn btn-secondary" onclick="window.location='/add_task_tag_user/{{ tasks_ids[loop.index0] }}'">Assign Tags</button>
         </td>
         {% endfor %}
       </tr>
