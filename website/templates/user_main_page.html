@@ -28,6 +28,9 @@
   <div class="container">
     <div class="row">
       <div class="col">
+        <button onclick="window.location.href='/add_task/{{ user[0] }}';" type="button" class="btn btn-primary">Create a new Task</button>
+      </div>
+      <div class="col">
         <button type="button" class="btn btn-primary" onclick="window.location='/show_tasks/{{ user[0] }}';">Show every task assigned to {{ user[1] }} {{ user[2] }}</button>
       </div>
       <div class="col">

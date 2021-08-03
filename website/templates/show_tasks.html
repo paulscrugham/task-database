@@ -4,8 +4,14 @@
 
     <h1 class="display-4">Browse all Tasks</h1>
 
-    <button onclick="window.location.href='/add_task';" type="button" class="btn btn-primary">Create a new Task</button>
-
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Create A New Task
+    </button>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        First Select a User via the Home Page in order to Create Tasks for the selected User
+      </div>
+    </div>
     <table class="table">
         <thead>
             <th>ID</th>
