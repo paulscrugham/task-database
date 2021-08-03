@@ -125,6 +125,10 @@ def add_badge():
         badge_name = request.form['badge_name']
         badge_criteria = request.form['badge_criteria']
         badge_tag = request.form['badge_tag']
+        # case if no tag is selectd
+        if badge_tag == "None":
+            badge_tag = None
+        
         query = 'INSERT INTO Badges(name, tg_id, criteria) VALUES (%s, %s, %s);'
         data = (badge_name, badge_tag, badge_criteria)
         execute_query(db_connection, query, data)
