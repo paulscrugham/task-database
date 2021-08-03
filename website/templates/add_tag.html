@@ -8,9 +8,9 @@
       <div class="mb-3">
         <label for="tag_name" class="form-label">Enter a Tag Name</label>
         {% if tag_data %}
-        <input type="text" class="form-control" id="tag_name" name="tag_name" value="{{ tag_data[0][1] }}">
+        <input type="text" class="form-control" id="tag_name" name="tag_name" value="{{ tag_data[0][1] }}" required>
         {% else %}
-        <input type="text" class="form-control" id="tag_name" name="tag_name">
+        <input type="text" class="form-control" id="tag_name" name="tag_name" required>
         {% endif %}
       </div>
 
