@@ -393,7 +393,9 @@ def update_task(task_id):
         query = "SELECT task_id, name, status, CAST(due_date AS DATE), pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
-        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id))
+        query = 'SELECT * FROM Tags;'
+        tags = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), tags=tags)
 
     elif request.method == 'POST':
         print('Updating Task', task_id, '...')
