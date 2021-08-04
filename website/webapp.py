@@ -333,7 +333,7 @@ def add_task():
 def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task.html', form_action='/add_task', user_id=user_id)
+        return render_template('add_task.html', form_action='/add_task/<int:user_id>', user_id=user_id)
 
     elif request.method == 'POST':
         print('Adding a Task...')
