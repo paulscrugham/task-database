@@ -60,7 +60,7 @@ def user_main_page(id):
     badges = execute_query(db_connection, query, data).fetchall()
 
     # query to select three in-progress tasks
-    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
+    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id LEFT JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
     print('results: ', results)
