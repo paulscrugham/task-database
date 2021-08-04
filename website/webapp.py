@@ -307,7 +307,7 @@ def show_user_tasks(user_id):
     return render_template('show_tasks.html', tasks=results)
 
 @webapp.route('/add_task', methods=['POST', 'GET'])
-def add_task(user_id):
+def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
         return render_template('add_task.html', form_action='/add_task')
