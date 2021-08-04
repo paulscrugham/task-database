@@ -330,7 +330,7 @@ def add_task():
 
 # creates user-specific task
 @webapp.route('/add_task/<int:user_id>', methods=['POST', 'GET'])
-def add_task(user_id):
+def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
         return render_template('add_task.html', form_action='/add_task', user_id=user_id)
