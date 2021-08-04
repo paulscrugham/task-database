@@ -310,7 +310,9 @@ def show_user_tasks(user_id):
 def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task.html', form_action='/add_task')
+        query = 'SELECT * FROM Tags;'
+        results = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task', tags=results)
 
     elif request.method == 'POST':
         print('Adding a Task...')
@@ -333,7 +335,9 @@ def add_task():
 def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task.html', form_action='/add_task/'+str(user_id), user_id=user_id)
+        query = 'SELECT * FROM Tags;'
+        results = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=results, user_id=user_id)
 
     elif request.method == 'POST':
         print('Adding a Task...')
