@@ -235,8 +235,22 @@ def show_users():
     # get user info
     query = 'SELECT user_id, first_name, last_name FROM Users;'
     users = execute_query(db_connection, query).fetchall()
-    print(users)
-    return render_template('show_users.html', users=users)
+
+    # get all assigned badges
+    query = 'SELECT ub.ur_id, b.name FROM Users_Badges ub JOIN Badges b ON b.badge_id = ub.be_id ORDER BY ur_id;'
+    all_assigned_badges = list(execute_query(db_connection, query).fetchall())
+    
+    # create new data structure with user data and their badges
+    users_badges = []
+    for u in users:
+        row = [u[0], u[1], u[2], []]
+        while all_assigned_badges and all_assigned_badges[0][0] == u[0]:
+            row[3].append(all_assigned_badges.pop(0)[1])
+        users_badges.append(row)
+
+    print(users_badges)
+    return render_template('show_users.html', users=users_badges)
+
 
 @webapp.route('/add_user', methods=['POST', 'GET'])
 def add_user():
@@ -251,16 +265,13 @@ def add_user():
         user_last_name = request.form['user_last_name']
         user_selected_badges = request.form.getlist('badges')
         
-        # insert new user into table
         query = 'INSERT INTO Users(first_name, last_name) VALUES (%s, %s);'
         data = (user_first_name, user_last_name)
         results = execute_query(db_connection, query, data)
-
-        # get id of new user
-        new_user_id = results.lastrowid
         
-        # assign badges to user if any are checked
-        for badge in user_selected_badges:
+        new_user_id = results.lastrowid # get id of new user
+        
+        for badge in user_selected_badges:  # assign badges to user if any are checked
             query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
             data = (new_user_id, int(badge))
             execute_query(db_connection, query, data)

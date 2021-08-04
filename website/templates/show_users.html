@@ -5,12 +5,26 @@
     <h1 class="display-4">Browse all Users</h1>
 
     <button onclick="window.location.href='/add_user';" type="button" class="btn btn-primary">Create a new User</button>
+    <br>
+    <div class="row">
+        <div class="col col-6 col-sm-2">
+            <label for="search_first_name" class="form-label"></label>
+            <input type="text" class="form-control" id="search_first_name" onkeyup="searchFilter('search_first_name', 'show_users_table', 1)" placeholder="Search for a user by first name">
+            <br>
+        </div>
+        <div class="col col-6 col-sm-2">
+            <label for="search_last_name" class="form-label"></label>
+            <input type="text" class="form-control" id="search_last_name" onkeyup="searchFilter('search_last_name', 'show_users_table', 2)" placeholder="Search for a user by last name">
+            <br>
+        </div>
+    </div>
 
-    <table class="table">
+    <table class="table" id="show_users_table">
         <thead>
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Earned Badges</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -19,6 +33,12 @@
                 <td>{{ item[0] }}</td>
                 <td>{{ item[1] }}</td>
                 <td>{{ item[2] }}</td>
+                <td>
+                    {% for badge in item[3] %}
+                    {{ badge }}, 
+                    {% endfor %}
+                
+                </td>
                 <td>
                     <button type="button" onclick="window.location='/update_user/{{item[0]}}';" class="btn btn-primary">Update</button>
                     <button type="button" onclick="window.location='/delete_user/{{item[0]}}';" class="btn btn-danger">Delete</button>
