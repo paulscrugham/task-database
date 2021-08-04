@@ -328,6 +328,29 @@ def add_task():
         execute_query(db_connection, query, data)
         return redirect('/show_tasks')
 
+# creates user-specific task
+@webapp.route('/add_task/<int:user_id>', methods=['POST', 'GET'])
+def add_task(user_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        return render_template('add_task.html', form_action='/add_task', user_id=user_id)
+
+    elif request.method == 'POST':
+        print('Adding a Task...')
+        task_name = request.form['task_name']
+        task_status = str(request.form['task_status'])
+        task_due_date = request.form['task_due_date']
+        task_time_due = str(request.form['task_time_due'])
+        task_pomodoros = request.form['task_pomodoros']
+        task_assigned_user = user_id
+
+        query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
+        task_due = str(task_due_date) + ' ' + str(task_time_due)
+        print('task_due: ', task_due)
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
+        execute_query(db_connection, query, data)
+        return redirect('/user_main_page/<int:user_id>')
+
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
     db_connection = connect_to_database()

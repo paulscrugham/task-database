@@ -48,6 +48,7 @@
         {% endif %}
       </div>
 
+      {% if user_id is not defined %}
       <div class="mb-3">
         <label for="task_assigned_user" class="form-label">Enter the assigned User ID:</label>
         <div class="input-group">
@@ -58,6 +59,7 @@
           {% endif %}
         </div>
       </div>
+      {% endif %}
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
