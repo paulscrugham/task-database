@@ -23,6 +23,20 @@
         {% endif %}
       </div>
 
+      <label class="form-label">Select Badges to Assign to the User:</label>
+      {% for badge in all_badges %}
+      <div class="form-check">
+          {% if current_badges and badge[0] in current_badges %}
+          <input class="form-check-input" type="checkbox" value="{{ badge[0] }}" id="badge{{ badge[0] }}" name="badges" checked>
+          {% else %}
+          <input class="form-check-input" type="checkbox" value="{{ badge[0] }}" id="badge{{ badge[0] }}" name="badges">
+          {% endif %}
+          <label class="form-check-label" for="badge{{ badge[0] }}">
+              {{ badge[1] }}
+          </label>
+      </div>
+      {% endfor %}
+
       <br>
       <input type="submit" class="btn btn-primary"></button>
     </form>
