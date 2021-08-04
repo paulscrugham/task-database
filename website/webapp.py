@@ -232,7 +232,7 @@ def update_badge(id):
 @webapp.route('/show_users')
 def show_users():
     db_connection = connect_to_database()
-    # get user info
+    # get all user rows
     query = 'SELECT user_id, first_name, last_name FROM Users;'
     users = execute_query(db_connection, query).fetchall()
 
@@ -363,18 +363,23 @@ def add_user_badge():
     if request.method == 'GET':
         user = None
         query = 'SELECT badge_id, name FROM Badges;'
-        badges = execute_query(db_connection, query).fetchall()
+        all_badges = execute_query(db_connection, query).fetchall()
         query = 'SELECT user_id, first_name, last_name FROM Users'
         all_users = execute_query(db_connection, query).fetchall()
-        return render_template('add_user_badge.html', form_action="/add_user_badge", badges=badges, all_users=all_users, user=user)
+        return render_template('add_user_badge.html', form_action="/add_user_badge", all_badges=all_badges, all_users=all_users, user=user)
     elif request.method == 'POST':
         print('Assigning a Badge...')
-        badge_id = request.form['badge_id']
+        badge_id = request.form['selected_badge']
         user_id = request.form['selected_user']
-        query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
-        data = (user_id, badge_id)
-        execute_query(db_connection, query, data)
-        return redirect('/show_users_badges')
+        # try/except to handle duplicate entries
+        try:
+            query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
+            data = (user_id, badge_id)
+            execute_query(db_connection, query, data)
+            return redirect('/show_users_badges')
+        except:
+            return render_template('error.html')
+        
 
 @webapp.route('/add_user_badge/<int:user_id>', methods=['POST', 'GET'])
 def add_user_specific_badge(user_id):
@@ -382,19 +387,21 @@ def add_user_specific_badge(user_id):
     if request.method == 'GET':
         all_users = None
         query = 'SELECT badge_id, name FROM Badges;'
-        badges = execute_query(db_connection, query).fetchall()
+        all_badges = execute_query(db_connection, query).fetchall()
         query = 'SELECT user_id, first_name, last_name FROM Users WHERE user_id=%s;'
         data = (user_id,)
         user = execute_query(db_connection, query, data).fetchone()
-        return render_template('add_user_badge.html', form_action="/add_user_badge/" + str(user_id), badges=badges, all_users=all_users, user=user)
+        return render_template('add_user_badge.html', form_action="/add_user_badge/" + str(user_id), all_badges=all_badges, all_users=all_users, user=user)
     elif request.method == 'POST':
         print('Assigning a Badge...')
-        badge_id = request.form['badge_id']
-        user_id = request.form['selected_user']
-        query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
-        data = (user_id, badge_id)
-        execute_query(db_connection, query, data)
-        return redirect('/user_main_page/' + str(user_id))
+        badge_id = request.form['selected_badge']
+        try:
+            query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
+            data = (user_id, badge_id)
+            execute_query(db_connection, query, data)
+            return redirect('/user_main_page/' + str(user_id))
+        except:
+            return render_template('error.html')
 
 
 # app routes for Tasks page

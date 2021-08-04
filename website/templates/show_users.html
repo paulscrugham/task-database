@@ -6,15 +6,20 @@
 
     <button onclick="window.location.href='/add_user';" type="button" class="btn btn-primary">Create a new User</button>
     <br>
+    <br>
     <div class="row">
-        <div class="col col-6 col-sm-2">
-            <label for="search_first_name" class="form-label"></label>
-            <input type="text" class="form-control" id="search_first_name" onkeyup="searchFilter('search_first_name', 'show_users_table', 1)" placeholder="Search for a user by first name">
-            <br>
+        <div class="col-auto">
+            <label for="search_first_name" class="col-form-label">Filter by first name:</label>
         </div>
         <div class="col col-6 col-sm-2">
-            <label for="search_last_name" class="form-label"></label>
-            <input type="text" class="form-control" id="search_last_name" onkeyup="searchFilter('search_last_name', 'show_users_table', 2)" placeholder="Search for a user by last name">
+            <input type="text" class="form-control" id="search_first_name" onkeyup="searchFilter('search_first_name', 'show_users_table', 1)" placeholder="Enter a first name">
+            <br>
+        </div>
+        <div class="col-auto">
+            <label for="search_last_name" class="col-form-label">or last name:</label>
+        </div>
+        <div class="col col-6 col-sm-2">
+            <input type="text" class="form-control" id="search_last_name" onkeyup="searchFilter('search_last_name', 'show_users_table', 2)" placeholder="Enter a last name">
             <br>
         </div>
     </div>

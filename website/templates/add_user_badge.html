@@ -2,7 +2,7 @@
 {% block body %}
 
 <div class="container">
-    <h1 class="display-4">Assign a Badge {% if user %} to {{ user[1] }} {{ user[2] }}{% endif %}</h1>
+    <h1 class="display-4">Assign a Badge {% if user %} to {{ user[1] }} {{ user[2] }} {% endif %}</h1>
     <br>
 
     <form class="form" action="{{ form_action }}" method="post">
@@ -19,17 +19,22 @@
     </div>
     {% endif %}
 
-    {% for item in badges %}
-      <div class="form-check">
-          <input class="form-check-input" type="radio" value="{{ item[0] }}" id="badge_id" name="badge_id" required>
-          <label class="form-check-label" for="flexCheckDefault">{{ item[1] }}</label>
-      </div>
-    {% endfor %}
-
+    <div class="mb-3">
+      <label for="selected_badge" class="form-label">Select a Badge:</label>
       <br>
-      <input type="submit" class="btn btn-primary"></button>
-    </form>
+      <select id="selected_badge" name="selected_badge" class="form-select" aria-label="" required>
+        <option selected></option>
+        {% for badge in all_badges %}
+        <option value="{{ badge[0] }}">{{ badge[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-  </div>
 
-  {% endblock %}
+    <br>
+    <input type="submit" class="btn btn-primary"></button>
+  </form>
+
+</div>
+
+{% endblock %}
