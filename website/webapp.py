@@ -3,8 +3,14 @@ from flask import request, redirect
 from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 from itertools import islice
+from datetime import date, datetime
 #create the web application
 webapp = Flask(__name__)
+
+
+def datetime_to_string(datetime):
+    return datetime.strftime("%B %-d %-I:%M%p")
+
 
 #provide a route where requests on the web application can be addressed
 @webapp.route('/hello')
@@ -60,27 +66,30 @@ def user_main_page(id):
     badges = execute_query(db_connection, query, data).fetchall()
 
     # query to select three in-progress tasks
-    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks LEFT JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id LEFT JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
+    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id, Tasks.due_date FROM Tasks LEFT JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id LEFT JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
     # print('results: ', results)
     tasks_data = {}
     tasks_ids = []
+    due_dates = []
     for item in results:
         if str(item[0]) not in tasks_data.keys():
             tasks_data[str(item[0])] = []
             tasks_ids.append(item[2])
+            due_dates.append(datetime_to_string(item[3]))
         tasks_data[str(item[0])].append(str(item[1]))
-    tasks_data = {key: tasks_data[key] for key in list(tasks_data)[:3]}  # only take the fist 3 tasks
-    # print('tasks_data: ', tasks_data)
-    # print('tasks_ids: ', tasks_ids)
+    tasks_data = {key: tasks_data[key] for key in list(tasks_data)}  # only take the fist 3 tasks
+    print('tasks_data: ', tasks_data)
+    print('tasks_ids: ', tasks_ids)
+    print('due_dates: ', due_dates)
 
     #query to select all in-progress tasks for User
     query = 'SELECT task_id, name, due_date FROM Tasks WHERE assigned_user=%s ORDER BY due_date;'
     data = (id,)
     open_tasks = execute_query(db_connection, query, data).fetchall()
 
-    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data, open_tasks=open_tasks, tasks_ids=tasks_ids)
+    return render_template('user_main_page.html', user=user, badges=badges, tasks_data=tasks_data, open_tasks=open_tasks, tasks_ids=tasks_ids, due_dates=due_dates)
 
 
 @webapp.route('/add_task_tag_user/<int:task_id>', methods=['POST', 'GET'])
@@ -136,17 +145,14 @@ def add_task_tag_user(task_id):
         return redirect('/user_main_page/' + str(user_id[0]))
         
 
-
-
-
 # app routes for Timer Page
 
-@webapp.route('/timer', methods=['POST'])
-def timer():
-    selected_task = request.form['selected_task']
+@webapp.route('/timer/<int:task_id>', methods=['POST', 'GET'])
+def timer(task_id):
+    # selected_task = request.form['selected_task']
     db_connection = connect_to_database()
     query = 'SELECT * FROM Tasks WHERE task_id=%s;'
-    data = (selected_task,)
+    data = (task_id,)
     task = execute_query(db_connection, query, data).fetchone()
     print(task)
     return render_template('timer.html', task=task)
