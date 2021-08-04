@@ -49,15 +49,15 @@
       </div>
 
       {% if tags is defined %}
-      <div class="form-check">
         {% for item in tags %}
-        <input class="form-check-input" type="checkbox" value="" id="tags_{{item[0]}}">
-        <label class="form-check-label" for="tags_{{item[0]}}">
-          {{ item[1] }}
-        </label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="tags_{{item[0]}}">
+          <label class="form-check-label" for="tags_{{item[0]}}">
+            {{ item[1] }}
+          </label>
+          <br>
+        </div>
         {% endfor %}
-        <br>
-      </div>
       {% endif %}
       <br><br>
 
