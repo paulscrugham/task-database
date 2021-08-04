@@ -332,7 +332,9 @@ def add_task():
 
         query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
-        task_id = execute_query(db_connection, query, data).fetchall()
+        results = execute_query(db_connection, query, data).fetchall()
+        task_id = results[0][0]
+        print('selected-tags: ', task_selected_tags)
         for tag in task_selected_tags:
             query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
             data = (task_id, int(tag))
