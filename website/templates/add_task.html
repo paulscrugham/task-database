@@ -48,6 +48,21 @@
         {% endif %}
       </div>
 
+      <label class="form-label">Select Tags to Assign to the Task:</label>
+      {% if tags is defined %}
+        {% for item in tags %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="{{item[0]}}" name="tags" id="tags_{{item[0]}}">
+          <label class="form-check-label" for="tags_{{item[0]}}">
+            {{ item[1] }}
+          </label>
+          <br>
+        </div>
+        {% endfor %}
+      {% endif %}
+      <br><br>
+
+      {% if user_id is not defined %}
       <div class="mb-3">
         <label for="task_assigned_user" class="form-label">Enter the assigned User ID:</label>
         <div class="input-group">
@@ -58,6 +73,7 @@
           {% endif %}
         </div>
       </div>
+      {% endif %}
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>

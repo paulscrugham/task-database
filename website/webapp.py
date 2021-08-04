@@ -60,7 +60,7 @@ def user_main_page(id):
     badges = execute_query(db_connection, query, data).fetchall()
 
     # query to select three in-progress tasks
-    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
+    query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks LEFT JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id LEFT JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
     # print('results: ', results)
@@ -357,7 +357,9 @@ def show_user_tasks(user_id):
 def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task.html', form_action='/add_task')
+        query = 'SELECT * FROM Tags;'
+        results = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task', tags=results)
 
     elif request.method == 'POST':
         print('Adding a Task...')
@@ -367,13 +369,60 @@ def add_task():
         task_time_due = str(request.form['task_time_due'])
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
+        task_selected_tags = request.form.getlist('tags')
 
         query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
+
+        query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
+        results = execute_query(db_connection, query, data).fetchall()
+        task_id = results[0][0]
+        print('selected-tags: ', task_selected_tags)
+        for tag in task_selected_tags:
+            query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+            data = (task_id, int(tag))
+            execute_query(db_connection, query, data)
         return redirect('/show_tasks')
+
+# creates user-specific task
+@webapp.route('/add_task/<int:user_id>', methods=['POST', 'GET'])
+def add_user_specific_task(user_id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        query = 'SELECT * FROM Tags;'
+        results = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=results, user_id=user_id)
+
+    elif request.method == 'POST':
+        print('Adding a Task...')
+        task_name = request.form['task_name']
+        task_status = str(request.form['task_status'])
+        task_due_date = request.form['task_due_date']
+        task_time_due = str(request.form['task_time_due'])
+        task_pomodoros = request.form['task_pomodoros']
+        task_assigned_user = user_id
+        task_selected_tags = request.form.getlist('tags')
+
+        query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
+        task_due = str(task_due_date) + ' ' + str(task_time_due)
+        print('task_due: ', task_due)
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
+        execute_query(db_connection, query, data)
+
+        query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
+        results = execute_query(db_connection, query, data).fetchall()
+        task_id = results[0][0]
+        print('selected-tags: ', task_selected_tags)
+        for tag in task_selected_tags:
+            query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+            data = (task_id, int(tag))
+            execute_query(db_connection, query, data)
+        return redirect('/user_main_page/'+str(user_id))
 
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
@@ -391,7 +440,9 @@ def update_task(task_id):
         query = "SELECT task_id, name, status, CAST(due_date AS DATE), pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
-        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id))
+        query = 'SELECT * FROM Tags;'
+        tags = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), tags=tags)
 
     elif request.method == 'POST':
         print('Updating Task', task_id, '...')
@@ -401,12 +452,25 @@ def update_task(task_id):
         task_time_due = str(request.form['task_time_due'])
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
+        task_selected_tags = request.form.getlist('tags')
 
         query = 'UPDATE Tasks SET name = %s, status = %s, due_date = %s, pomodoros = %s, assigned_user = %s WHERE task_id = %s;'
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
         execute_query(db_connection, query, data)
+
+        # remove all existing tags from this task
+        query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s;'
+        data = (task_id,)
+        execute_query(db_connection, query, data)
+
+        # now add the selected tags to Tasks_Tags
+        print('selected-tags: ', task_selected_tags)
+        for tag in task_selected_tags:
+            query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+            data = (task_id, int(tag))
+            execute_query(db_connection, query, data)
         return redirect('/show_tasks')
 
 # app routes for Tags page
