@@ -322,12 +322,21 @@ def add_task():
         task_time_due = str(request.form['task_time_due'])
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
+        task_selected_tags = request.form['tags']
 
         query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
+
+        query = 'SELECT task_id FROM Tasks WHERE name = %s, status = %s, due_date = %s, pomodoros = %s, assigned_user = %s;'
+        data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
+        task_id = execute_query(db_connection, query, data).fetchall()
+        for tag in task_selected_tags:
+            query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+            data = (task_id, int(tag))
+            execute_query(db_connection, query, data)
         return redirect('/show_tasks')
 
 # creates user-specific task
