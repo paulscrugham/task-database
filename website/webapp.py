@@ -330,7 +330,7 @@ def add_task():
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
 
-        query = 'SELECT task_id FROM Tasks WHERE name = %s, status = %s, due_date = %s, pomodoros = %s, assigned_user = %s;'
+        query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         task_id = execute_query(db_connection, query, data).fetchall()
         for tag in task_selected_tags:
