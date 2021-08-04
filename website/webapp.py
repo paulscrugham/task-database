@@ -63,7 +63,7 @@ def user_main_page(id):
     query = 'SELECT Tasks.name, Tags.name, Tasks.task_id FROM Tasks JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id JOIN Tags ON t_t.tg_id = Tags.tag_id WHERE assigned_user = %s AND status = 0 ORDER BY due_date ASC;'
     data = (id,)
     results = execute_query(db_connection, query, data).fetchall()
-    print('results: ', results)
+    # print('results: ', results)
     tasks_data = {}
     tasks_ids = []
     for item in results:
@@ -72,8 +72,8 @@ def user_main_page(id):
             tasks_ids.append(item[2])
         tasks_data[str(item[0])].append(str(item[1]))
     tasks_data = {key: tasks_data[key] for key in list(tasks_data)[:3]}  # only take the fist 3 tasks
-    print('tasks_data: ', tasks_data)
-    print('tasks_ids: ', tasks_ids)
+    # print('tasks_data: ', tasks_data)
+    # print('tasks_ids: ', tasks_ids)
 
     #query to select all in-progress tasks for User
     query = 'SELECT task_id, name, due_date FROM Tasks WHERE assigned_user=%s ORDER BY due_date;'
@@ -86,26 +86,54 @@ def user_main_page(id):
 @webapp.route('/add_task_tag_user/<int:task_id>', methods=['POST', 'GET'])
 def add_task_tag_user(task_id):
     db_connection = connect_to_database()
+    # query DB for tags associated with task
+    query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
+    data = (task_id,)
+    queried_tags = execute_query(db_connection, query, data).fetchall()
+    current_tags = []
+    
+    for tup in queried_tags:
+        current_tags.append(tup[0])
+    
     if request.method == 'GET':
-        # query DB for tags associated with task
-        query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
-        data = (task_id,)
-        queried_tags = execute_query(db_connection, query, data).fetchall()
-        selected_tags = []
-        for tup in queried_tags:
-            selected_tags.append(tup[0])
-        print(selected_tags)
         # query DB for all tag names and IDs
         query = 'SELECT tag_id, name FROM Tags;'
         all_tags = execute_query(db_connection, query).fetchall()
-        print(all_tags)
-        query = 'SELECT name FROM Tasks WHERE task_id=%s;'
+
+        query = 'SELECT task_id, name FROM Tasks WHERE task_id=%s;'
         data = (task_id,)
-        task_name = execute_query(db_connection, query, data).fetchone()
-        print(task_name)
-        return render_template('add_task_tag_user.html', selected_tags=selected_tags, all_tags=all_tags, task_name=task_name)
+        task = execute_query(db_connection, query, data).fetchone()
+
+        return render_template('add_task_tag_user.html', current_tags=current_tags, all_tags=all_tags, task=task)
     if request.method == 'POST':
         print('Updating Tags for a Task...')
+        print(request.form)
+
+        new_tags = []
+        for tag in request.form:
+            new_tags.append(int(request.form.get(tag)))
+
+        delete_list = set(current_tags) - set(new_tags)
+        add_list = set(new_tags) - set(current_tags)
+
+        # query to delete removed tags
+        query = 'DELETE FROM Tasks_Tags WHERE tk_id=%s and tg_id=%s;'
+        for tag in delete_list:
+            data = (task_id, tag)
+            execute_query(db_connection, query, data)
+
+        # query to add new tags
+        query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+        for tag in add_list:
+            data = (task_id, tag)
+            execute_query(db_connection, query, data)
+
+        # get user id for user main page redirect
+        query = 'SELECT assigned_user FROM Tasks WHERE task_id=%s;'
+        data = (task_id,)
+        user_id = execute_query(db_connection, query, data).fetchone()
+
+        return redirect('/user_main_page/' + str(user_id[0]))
         
 
 
@@ -255,9 +283,12 @@ def update_user(id):
 def show_users_badges():
     db_connection = connect_to_database()
     query = 'SELECT users.first_name, badges.name, users.user_id, badges.badge_id FROM Users_Badges u_b JOIN Users users ON u_b.ur_id = users.user_id JOIN Badges badges ON u_b.be_id = badges.badge_id;'
-    results = execute_query(db_connection, query).fetchall()
-    print(results)
-    return render_template('show_users_badges.html', users_badges=results)
+    users_badges = execute_query(db_connection, query).fetchall()
+
+    # get users
+    query = 'SELECT user_id, first_name, last_name FROM Users ORDER BY first_name;'
+    users = execute_query(db_connection, query).fetchall()
+    return render_template('show_users_badges.html', users_badges=users_badges, users=users)
 
 @webapp.route('/delete_user_badge/<int:user_id>/<int:badge_id>')
 def delete_user_badge(user_id, badge_id):
@@ -268,7 +299,7 @@ def delete_user_badge(user_id, badge_id):
     return redirect('/show_users_badges')
 
 @webapp.route('/add_user_badge/<int:user_id>', methods=['POST', 'GET'])
-def add_user_badge(user_id):
+def add_user_badge(user_id=None):
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT * FROM Badges;'
@@ -277,6 +308,7 @@ def add_user_badge(user_id):
         data = (user_id,)
         user = execute_query(db_connection, query, data).fetchone()
         print(user)
+        print(request.path)
         return render_template('add_user_badge.html', badges=badges, user=user)
     elif request.method == 'POST':
         print('Assigning a Badge...')
@@ -285,6 +317,21 @@ def add_user_badge(user_id):
         data = (user_id, badge_id)
         execute_query(db_connection, query, data)
         return redirect('/user_main_page/' + str(user_id))
+
+
+# @webapp.route('/add_user_badge', methods=['POST', 'GET'])
+# def add_user_badge():
+#     db_connection = connect_to_database()
+#     if request.method == 'GET':
+#         query = 'SELECT badge_id, name from Badges;'
+#         badges = execute_query(db_connection, query).fetchall()
+
+#         query = 'SELECT user_id, first_name, last_name FROM Users;'
+#         users = execute_query(db_connection, query).fetchall()
+
+#         return render_template('add_user_badge.html', users=users, badges=badges)
+#     # if request.method == 'POST':
+
 
 
 # app routes for Tasks page

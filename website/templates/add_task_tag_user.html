@@ -3,21 +3,24 @@
 
 <div class="container">
 
-    <h1 class="display-4">Assign tags to: {{ task_name[0] }}</h1>
+    <h1 class="display-4">Assign tags to: {{ task[1] }}</h1>
     <br>
-    <form class="form" action="/add_task_tag_user" method="post">
+    <form class="form" action="/add_task_tag_user/{{ task[0] }}" method="post">
         {% for tag in all_tags %}
         <div class="form-check">
-            {% if tag[0] in selected_tags %}
-            <input class="form-check-input" type="checkbox" value="{{ tag[0] }}" id="tag" name="tag" checked>
+            {% if tag[0] in current_tags %}
+            <input class="form-check-input" type="checkbox" value="{{ tag[0] }}" id="tag{{ tag[0] }}" name="tag{{ tag[0] }}" checked>
             {% else %}
-            <input class="form-check-input" type="checkbox" value="{{ tag[0] }}" id="tag" name="tag">
+            <input class="form-check-input" type="checkbox" value="{{ tag[0] }}" id="tag{{ tag[0] }}" name="tag{{ tag[0] }}">
             {% endif %}
             <label class="form-check-label" for="tag">
                 {{ tag[1] }}
             </label>
         </div>
         {% endfor %}
+        <br>
+
+        <button type="submit" class="btn btn-primary">Assign tasks</button>
     
     </form>
 </div>

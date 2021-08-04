@@ -37,9 +37,6 @@
       <div class="col">
         <button type="button" class="btn btn-primary" onclick="window.location='/show_tags';">Show all Tags</button>
       </div>
-      <div class="col">
-        <button type="button" class="btn btn-primary" onclick="window.location='/add_user_badge/{{ user[0] }}';">Manually assign a Badge to {{ user[1] }} {{ user[2] }}</button>
-      </div>
     </div>
   </div>
 
@@ -78,6 +75,7 @@
       {% endfor %}
       </tr>
     </table>
+    <button type="button" class="btn btn-primary" onclick="window.location='/add_user_badge/{{ user[0] }}';">Assign a Badge to {{ user[1] }}</button>
   </div>
 
 {% endblock %}
