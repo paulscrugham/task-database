@@ -333,7 +333,7 @@ def add_task():
 def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task.html', form_action='/add_task/<int:user_id>', user_id=user_id)
+        return render_template('add_task.html', form_action='/add_task/'+str(user_id), user_id=user_id)
 
     elif request.method == 'POST':
         print('Adding a Task...')
@@ -349,7 +349,7 @@ def add_user_specific_task(user_id):
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
         execute_query(db_connection, query, data)
-        return redirect('/user_main_page/<int:user_id>')
+        return redirect('/user_main_page/'+str(user_id))
 
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
