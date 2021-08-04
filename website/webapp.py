@@ -322,7 +322,7 @@ def add_task():
         task_time_due = str(request.form['task_time_due'])
         task_pomodoros = request.form['task_pomodoros']
         task_assigned_user = request.form['task_assigned_user']
-        task_selected_tags = request.form['tags']
+        task_selected_tags = request.form.getlist('tags')
 
         query = 'INSERT INTO Tasks(name, status, due_date, pomodoros, assigned_user) VALUES (%s, %s, %s, %s, %s);'
         task_due = str(task_due_date) + ' ' + str(task_time_due)
