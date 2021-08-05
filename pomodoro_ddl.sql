@@ -8,26 +8,26 @@ CREATE TABLE `Users` (
 -- Query to create the Tasks table
 CREATE TABLE `Tasks` (
     `task_id` INT(11) AUTO_INCREMENT NOT NULL UNIQUE PRIMARY KEY,
-    `name` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(50) NOT NULL UNIQUE,
     `assigned_user` INT(11) NOT NULL,
     `status` BOOL NOT NULL,
     `due_date` DATETIME NOT NULL,
-    `pomodoros` INT(4) NOT NULL,
+    `pomodoros` INT(4) NOT NULL CHECK (`pomodoros` >= 1),
     FOREIGN KEY (`assigned_user`) REFERENCES Users (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- Query to create the Tags table
 CREATE TABLE `Tags` (
     `tag_id` INT(11) AUTO_INCREMENT NOT NULL UNIQUE PRIMARY KEY,
-    `name` VARCHAR(50) NOT NULL
+    `name` VARCHAR(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
 
 -- Query to create the Badges table
 CREATE TABLE `Badges` (
     `badge_id` INT(11) AUTO_INCREMENT NOT NULL UNIQUE PRIMARY KEY,
-    `name` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(50) NOT NULL UNIQUE,
     `tg_id` INT(11) DEFAULT NULL,
-    `criteria` INT(4) NOT NULL,
+    `criteria` INT(4) NOT NULL CHECK (`criteria` >= 1),
     FOREIGN KEY (`tg_id`) REFERENCES `Tags` (`tag_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
