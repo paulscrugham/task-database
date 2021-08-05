@@ -4,7 +4,7 @@ from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 from itertools import islice
 from datetime import date, datetime
-import MYSQLdb
+import MySQLdb as mariadb
 #create the web application
 webapp = Flask(__name__)
 
@@ -38,12 +38,12 @@ def home():
 
 # app routes for Errors and Exceptions
 
-@webapp.errorhandler(MYSQLdb.Error)
+@webapp.errorhandler(mariadb.Error)
 def error_handler():
    return render_template('error.html')
 
 
-@webapp.errorhandler(MYSQLdb.Warning)
+@webapp.errorhandler(mariadb.Warning)
 def warning_handler():
    return render_template('error.html')
 
