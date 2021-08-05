@@ -613,7 +613,12 @@ def delete_task_tag(task_id, tag_id):
 def add_task_tag():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        return render_template('add_task_tag.html', form_action='/add_task_tag')
+        db_connection = connect_to_database()
+        query = 'SELECT task_id, name FROM Tasks;'
+        tasks = execute_query(db_connection, query).fetchall()
+        query = 'SELECT tag_id, name FROM Tags;'
+        tags = execute_query(db_connection, query).fetchall()
+        return render_template('add_task_tag.html', tasks=tasks, tags=tags, form_action='/add_task_tag')
 
     elif request.method == 'POST':
         print('Assigning a Task to a Tag...')
