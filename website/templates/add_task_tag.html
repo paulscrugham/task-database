@@ -8,13 +8,25 @@
     <form class="form" id="add_task_tag_form" action="{{ form_action }}" method="POST">
 
       <div class="mb-3">
-        <label for="task_id" class="form-label">Enter the ID of a Task entity:</label>
-        <input id="task_id" type="number" class="form-control" name="task_id" required>
+        <label for="dropdownTasks" class="form-label">Select a Task:</label>
+        <br>
+        <select id="dropdownTasks" name="selected_task" class="form-select" aria-label="" required>
+          <option selected></option>
+          {% for task in tasks %}
+          <option value="{{ task[0] }}">{{ task[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <div class="mb-3">
-        <label for="tag_id" class="form-label">Enter the ID of a Tag entity:</label>
-        <input id="tag_id" type="number" class="form-control" name="tag_id" required>
+        <label for="dropdownTags" class="form-label">Select a Tag:</label>
+        <br>
+        <select id="dropdownTags" name="selected_tag" class="form-select" aria-label="" required>
+          <option selected></option>
+          {% for tag in tags %}
+          <option value="{{ tag[0] }}">{{ tag[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <br>
