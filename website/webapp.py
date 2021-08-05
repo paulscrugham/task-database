@@ -4,7 +4,7 @@ from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 from itertools import islice
 from datetime import date, datetime
-import MySQLdb
+import MYSQLdb
 #create the web application
 webapp = Flask(__name__)
 
