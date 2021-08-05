@@ -467,9 +467,7 @@ def add_user_specific_task(user_id):
     if request.method == 'GET':
         query = 'SELECT * FROM Tags;'
         tags = execute_query(db_connection, query).fetchall()
-        query = 'SELECT * FROM Users;'
-        users = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=tags, users=users, user_id=user_id)
+        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=tags, user_id=user_id)
 
     elif request.method == 'POST':
         print('Adding a Task...')
