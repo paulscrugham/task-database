@@ -7,34 +7,35 @@
   <br><br>
   <div class="container">
     <h3>Upcoming Tasks</h3>
-    <table class="table">
-      <tr>
-        {% for task, tags in tasks_data.items() %}
-        <td>
-          {{ task }}
-          <ul>
-            {% for tag in tags %}
-            <li>{{ tag }}</li>
-            {% endfor %}
-          </ul>
-          <button type="button" class="btn btn-secondary" onclick="window.location='/add_task_tag_user/{{ tasks_ids[loop.index0] }}'">Assign Tags</button>
-        </td>
-        {% endfor %}
-      </tr>
-    </table>
+    <div class="card-columns">
+      {% for task, tags in tasks_data.items() %}
+      <div class="card">
+        <div class="card-header">
+          <strong>{{ task }}</strong>
+        </div>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted">Due: {{ due_dates[loop.index0] }}</h6>
+          <p class="card-text">Tags:{% for tag in tags %} {{ tag }}, {% endfor %}</p>
+          <a href="/add_task_tag_user/{{ tasks_ids[loop.index0] }}" class="card-link">Assign a Tag</a>
+          <a href="/timer/{{ tasks_ids[loop.index0] }}" class="card-link">Start Timer</a>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
   </div>
 
   <br>
 
   <div class="container">
     <div class="row">
-      <div class="col">
+      <div class="col col-auto">
         <button onclick="window.location.href='/add_task/{{ user[0] }}';" type="button" class="btn btn-primary">Create a new Task</button>
       </div>
-      <div class="col">
+      <div class="col col-auto">
         <button type="button" class="btn btn-primary" onclick="window.location='/show_tasks/{{ user[0] }}';">Show every task assigned to {{ user[1] }} {{ user[2] }}</button>
       </div>
-      <div class="col">
+      <div class="col col-auto">
         <button type="button" class="btn btn-primary" onclick="window.location='/show_tags';">Show all Tags</button>
       </div>
     </div>
@@ -42,33 +43,11 @@
 
   <br><br>
 
-  <div class="container">
-    <form class="form" action='/timer' method='post'>
-      <div class="mb-3">
-        <label for="selected_task" class="form-label">Select a task to start timing:</label>
-        <br>
-        <select id="selected_task" class="form-select" aria-label="Select A Task" name="selected_task">
-          <option selected>None</option>
-          {% for item in open_tasks %}
-          <option value="{{ item[0] }}">{{ item[1] }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <br>
-      <button type="submit" class="btn btn-primary">Start Pomodoros</button>
-    </form>
-  </div>
-
-  <br><br>
-
-
-
   <br><br>
 
   <div class="container">
     <h3>{{ user[1] }} {{ user[2] }}'s Earned Badges</h3>
-    <table class="table">
+    <table class="table table-bordered">
       <tr>
       {% for item in badges %}
         <td>{{ item[0] }}</td>
