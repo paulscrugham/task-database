@@ -69,7 +69,7 @@
         <select id="task_assigned_user" name="task_assigned_user" class="form-select" aria-label="" required>
           <option selected></option>
           {% for user in users %}
-          <option value="{{ user[0] }}">{{ user[1] }}</option>
+          <option value="{{ user[0] }}">{{ user[1] }} {{ user[2] }}</option>
           {% endfor %}
         </select>
       </div>

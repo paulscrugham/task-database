@@ -428,8 +428,10 @@ def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT * FROM Tags;'
-        results = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', form_action='/add_task', tags=results)
+        tags = execute_query(db_connection, query).fetchall()
+        query = 'SELECT * FROM Users;'
+        users = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task', tags=tags, users=users)
 
     elif request.method == 'POST':
         print('Adding a Task...')
