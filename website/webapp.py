@@ -4,6 +4,7 @@ from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 from itertools import islice
 from datetime import date, datetime
+import MySQLdb
 #create the web application
 webapp = Flask(__name__)
 
@@ -34,6 +35,17 @@ def index():
 def home():
     return render_template('home.html')
 
+
+# app routes for Errors and Exceptions
+
+@app.errorhandler(MYSQLdb.Error)
+def error_handler():
+   return render_template('error.html')
+
+
+@app.errorhandler(MYSQLdb.Warning)
+def warning_handler():
+   return render_template('error.html')
 
 # app routes for user searches
 
