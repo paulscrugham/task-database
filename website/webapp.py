@@ -465,7 +465,10 @@ def add_task():
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
-        execute_query(db_connection, query, data)
+        try:
+            execute_query(db_connection, query, data)
+        except (mariadb.Error, mariadb.Warning):
+            return render_template('error.html')
 
         query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
@@ -501,7 +504,10 @@ def add_user_specific_task(user_id):
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
-        execute_query(db_connection, query, data)
+        try:
+            execute_query(db_connection, query, data)
+        except (mariadb.Error, mariadb.Warning):
+            return render_template('error.html')
 
         query = 'SELECT task_id FROM Tasks WHERE name = %s AND status = %s AND due_date = %s AND pomodoros = %s AND assigned_user = %s;'
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user)
@@ -550,7 +556,10 @@ def update_task(task_id):
         task_due = str(task_due_date) + ' ' + str(task_time_due)
         print('task_due: ', task_due)
         data = (task_name, task_status, task_due, task_pomodoros, task_assigned_user, task_id)
-        execute_query(db_connection, query, data)
+        try:
+            execute_query(db_connection, query, data)
+        except (mariadb.Error, mariadb.Warning):
+            return render_template('error.html')
 
         # remove all existing tags from this task
         query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s;'
@@ -593,7 +602,10 @@ def add_tag():
         tag_name = request.form['tag_name']
         query = 'INSERT INTO Tags(name) VALUES (%s);'
         data = (tag_name,)
-        execute_query(db_connection, query, data)
+        try:
+            execute_query(db_connection, query, data)
+        except (mariadb.Error, mariadb.Warning):
+            return render_template('error.html')
         return redirect('/show_tags')
 
 @webapp.route('/update_tag/<int:tag_id>', methods=['POST', 'GET'])
@@ -610,7 +622,10 @@ def update_tag(tag_id):
         tag_name = request.form['tag_name']
         query = 'UPDATE Tags SET name = %s WHERE tag_id = %s;'
         data = (tag_name, tag_id)
-        execute_query(db_connection, query, data)
+        try:
+            execute_query(db_connection, query, data)
+        except (mariadb.Error, mariadb.Warning):
+            return render_template('error.html')
         return redirect('/show_tags')
 
 
