@@ -3,7 +3,7 @@ from flask import request, redirect
 from flask.templating import render_template_string
 from db_connector.db_connector import connect_to_database, execute_query
 from itertools import islice
-from datetime import date, datetime
+
 #create the web application
 webapp = Flask(__name__)
 
@@ -22,7 +22,7 @@ def hello():
 def index():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = 'SELECT * FROM Tasks;'
+        query = 'SELECT task_id, name, assigned_user, status, due_date, pomodoros FROM Tasks;'
         values = execute_query(db_connection, query).fetchall()
         print(values)
     return render_template('db_test.html', results=values)
@@ -56,7 +56,7 @@ def user_main_page(id):
     db_connection = connect_to_database()
 
     # query to select User's name and id
-    query = 'SELECT * FROM Users WHERE user_id = %s;'
+    query = 'SELECT user_id, first_name, last_name FROM Users WHERE user_id = %s;'
     data = (id,)
     user = execute_query(db_connection, query, data).fetchone()
 
@@ -151,7 +151,7 @@ def add_task_tag_user(task_id):
 def timer(task_id):
     # selected_task = request.form['selected_task']
     db_connection = connect_to_database()
-    query = 'SELECT * FROM Tasks WHERE task_id=%s;'
+    query = 'SELECT task_id, name, assigned_user, status, due_date, pomodoros FROM Tasks WHERE task_id=%s;'
     data = (task_id,)
     task = execute_query(db_connection, query, data).fetchone()
     print(task)
@@ -433,9 +433,9 @@ def show_user_tasks(user_id):
 def add_task():
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = 'SELECT * FROM Tags;'
+        query = 'SELECT tag_id, name FROM Tags;'
         tags = execute_query(db_connection, query).fetchall()
-        query = 'SELECT * FROM Users;'
+        query = 'SELECT user_id, first_name, last_name FROM Users;'
         users = execute_query(db_connection, query).fetchall()
         return render_template('add_task.html', form_action='/add_task', tags=tags, users=users)
 
@@ -471,7 +471,7 @@ def add_task():
 def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = 'SELECT * FROM Tags;'
+        query = 'SELECT tag_id, name FROM Tags;'
         tags = execute_query(db_connection, query).fetchall()
         return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=tags, user_id=user_id)
 
@@ -515,14 +515,17 @@ def delete_task(task_id):
 def update_task(task_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = "SELECT task_id, name, status, CAST(due_date AS DATE), pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
+        query = "SELECT task_id, name, status, due_date, pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
-        query = 'SELECT * FROM Tags;'
+        time = results[0][3].strftime("%H:%M:%S")
+        date = results[0][3].strftime("%Y-%m-%d")
+        due_date = {'date': date, 'time': time}
+        query = 'SELECT tag_id, name FROM Tags;'
         tags = execute_query(db_connection, query).fetchall()
-        query = 'SELECT * FROM Users;'
+        query = 'SELECT user_id, first_name, last_name FROM Users;'
         users = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), users=users, tags=tags)
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), users=users, tags=tags, time=time, due_date=due_date)
 
     elif request.method == 'POST':
         print('Updating Task', task_id, '...')
@@ -558,7 +561,7 @@ def update_task(task_id):
 @webapp.route('/show_tags')
 def show_tags():
     db_connection = connect_to_database()
-    query = 'SELECT * FROM Tags;'
+    query = 'SELECT tag_id, name FROM Tags;'
     results = execute_query(db_connection, query).fetchall()
     return render_template('show_tags.html', tags=results)
 
@@ -588,7 +591,7 @@ def add_tag():
 def update_tag(tag_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
-        query = "SELECT * FROM Tags WHERE tag_id = %s;"
+        query = "SELECT tag_id, name FROM Tags WHERE tag_id = %s;"
         data = (tag_id,)
         results = execute_query(db_connection, query, data).fetchall()
         return render_template('add_tag.html', tag_data=results, form_action='/update_tag/' + str(tag_id))
