@@ -38,12 +38,12 @@ def home():
 
 # app routes for Errors and Exceptions
 
-@app.errorhandler(MYSQLdb.Error)
+@webapp.errorhandler(MYSQLdb.Error)
 def error_handler():
    return render_template('error.html')
 
 
-@app.errorhandler(MYSQLdb.Warning)
+@webapp.errorhandler(MYSQLdb.Warning)
 def warning_handler():
    return render_template('error.html')
 
