@@ -617,8 +617,8 @@ def add_task_tag():
 
     elif request.method == 'POST':
         print('Assigning a Task to a Tag...')
-        task_id = request.form['task_id']
-        tag_id = request.form['tag_id']
+        task_id = request.form['selected_task']
+        tag_id = request.form['selected_tag']
         query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
         data = (task_id, tag_id)
         execute_query(db_connection, query, data)
