@@ -466,8 +466,10 @@ def add_user_specific_task(user_id):
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT * FROM Tags;'
-        results = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=results, user_id=user_id)
+        tags = execute_query(db_connection, query).fetchall()
+        query = 'SELECT * FROM Users;'
+        users = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', form_action='/add_task/'+str(user_id), tags=tags, users=users, user_id=user_id)
 
     elif request.method == 'POST':
         print('Adding a Task...')
@@ -514,7 +516,9 @@ def update_task(task_id):
         results = execute_query(db_connection, query, data).fetchall()
         query = 'SELECT * FROM Tags;'
         tags = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), tags=tags)
+        query = 'SELECT * FROM Users;'
+        users = execute_query(db_connection, query).fetchall()
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), users=users, tags=tags)
 
     elif request.method == 'POST':
         print('Updating Task', task_id, '...')
