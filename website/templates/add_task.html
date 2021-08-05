@@ -19,16 +19,25 @@
         <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
         <select id="task_status" name="task_status" class="form-select" aria-label="Select A Tag" required>
-          <option selected></option>
+          {% if task_data %}
+            {% if task_data[0][2] == 0 %}
+            <option value="0" selected>In Progress</option>
+            <option value="1">Complete</option>
+            {% else %}
+            <option value="0">In Progress</option>
+            <option value="1" selected>Complete</option>
+            {% endif %}
+          {% else %}
           <option value="0">In Progress</option>
           <option value="1">Complete</option>
+          {% endif %}
         </select>
       </div>
 
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
-        {% if task_data %}
-        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{task_data[0][3]}}" required>
+        {% if due_date %}
+        <input id="task_due_date" type="date" class="form-control" name="task_due_date" value="{{ due_date['date'] }}" required>
         {% else %}
         <input id="task_due_date" type="date" class="form-control" name="task_due_date" required>
         {% endif %}
@@ -36,7 +45,11 @@
 
       <div class="mb-3">
         <label for="task_time_due" class="form-label">Enter a time due:</label>
+        {% if due_date %}
+        <input id="task_time_due" type="time" class="form-control" name="task_time_due" value="{{ due_date['time'] }}" required>
+        {% else %}
         <input id="task_time_due" type="time" class="form-control" name="task_time_due" required>
+        {% endif %}
       </div>
 
       <div class="mb-3">
@@ -67,9 +80,13 @@
         <label for="task_assigned_user" class="form-label">Select A User To Assign This Task:</label>
         <br>
         <select id="task_assigned_user" name="task_assigned_user" class="form-select" aria-label="" required>
-          <option selected></option>
           {% for user in users %}
+
+          {% if task_data is defined and task_data[0][5] == user[0] %}
+          <option value="{{ user[0] }}" selected>{{ user[1] }} {{ user[2] }}</option>
+          {% else %}
           <option value="{{ user[0] }}">{{ user[1] }} {{ user[2] }}</option>
+          {% endif %}
           {% endfor %}
         </select>
       </div>
