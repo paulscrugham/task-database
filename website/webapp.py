@@ -532,18 +532,26 @@ def delete_task(task_id):
 @webapp.route('/update_task/<int:task_id>', methods=['POST', 'GET'])
 def update_task(task_id):
     db_connection = connect_to_database()
+    # get this Task's Tags
+    query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
+    data = (task_id,)
+    queried_tags = execute_query(db_connection, query, data).fetchall()
+    current_tags = []
+    for tup in queried_tags:
+        current_tags.append(tup[0])
+    
     if request.method == 'GET':
         query = "SELECT task_id, name, status, due_date, pomodoros, assigned_user FROM Tasks WHERE task_id = %s;"
         data = (task_id,)
         results = execute_query(db_connection, query, data).fetchall()
-        time = results[0][3].strftime("%H:%M:%S")
-        date = results[0][3].strftime("%Y-%m-%d")
-        due_date = {'date': date, 'time': time}
+        due_date = {'date': results[0][3].strftime("%Y-%m-%d"), 'time': results[0][3].strftime("%H:%M:%S")}
         query = 'SELECT tag_id, name FROM Tags;'
-        tags = execute_query(db_connection, query).fetchall()
+        all_tags = execute_query(db_connection, query).fetchall()
         query = 'SELECT user_id, first_name, last_name FROM Users;'
         users = execute_query(db_connection, query).fetchall()
-        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), users=users, tags=tags, time=time, due_date=due_date)
+        return render_template('add_task.html', task_data=results, form_action='/update_task/' + str(task_id), 
+                                users=users, all_tags=all_tags, current_tags=current_tags, due_date=due_date
+                                )
 
     elif request.method == 'POST':
         print('Updating Task', task_id, '...')
@@ -563,18 +571,38 @@ def update_task(task_id):
             execute_query(db_connection, query, data)
         except (mariadb.Error, mariadb.Warning):
             return render_template('error.html')
+        # # remove all existing tags from this task
+        # query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s;'
+        # data = (task_id,)
+        # execute_query(db_connection, query, data)
 
-        # remove all existing tags from this task
-        query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s;'
-        data = (task_id,)
-        execute_query(db_connection, query, data)
-
-        # now add the selected tags to Tasks_Tags
-        print('selected-tags: ', task_selected_tags)
+        # # now add the selected tags to Tasks_Tags
+        # print('selected-tags: ', task_selected_tags)
+        # for tag in task_selected_tags:
+        #     query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+        #     data = (task_id, int(tag))
+        #     execute_query(db_connection, query, data)
+        
+        new_tags = []
         for tag in task_selected_tags:
-            query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
-            data = (task_id, int(tag))
+            new_tags.append(int(tag))
+
+        # get lists of only the tags that were added/removed
+        delete_list = set(current_tags) - set(new_tags)
+        add_list = set(new_tags) - set(current_tags)
+
+        # query to delete removed tags
+        query = 'DELETE FROM Tasks_Tags WHERE tk_id=%s and tg_id=%s;'
+        for tag in delete_list:
+            data = (task_id, tag)
             execute_query(db_connection, query, data)
+
+        # query to add new tags
+        query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
+        for tag in add_list:
+            data = (task_id, tag)
+            execute_query(db_connection, query, data)
+
         return redirect('/show_tasks')
 
 # app routes for Tags page
