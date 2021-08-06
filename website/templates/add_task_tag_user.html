@@ -7,6 +7,7 @@
     <br>
     <form class="form" action="/add_task_tag_user/{{ task[0] }}" method="post">
         {% for tag in all_tags %}
+        {# defines Dropdown to Select the Tag to Assign to the Task #}
         <div class="form-check">
             {% if tag[0] in current_tags %}
             <input class="form-check-input" type="checkbox" value="{{ tag[0] }}" id="tag{{ tag[0] }}" name="tag{{ tag[0] }}" checked>

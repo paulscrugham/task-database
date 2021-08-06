@@ -447,6 +447,7 @@ def add_user_specific_badge(user_id):
 
 @webapp.route('/show_tasks')
 def show_tasks():
+    # Shows all the Tasks in the Tasks table
     db_connection = connect_to_database()
     query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;'
     results = execute_query(db_connection, query).fetchall()
@@ -469,6 +470,7 @@ def show_tasks():
 
 @webapp.route('/show_tasks/<int:user_id>')
 def show_user_tasks(user_id):
+    # Shows all Tasks belonging to User with User ID = user_id
     db_connection = connect_to_database()
     query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id WHERE u.user_id=%s;'
     data = (user_id,)
@@ -478,8 +480,11 @@ def show_user_tasks(user_id):
 
 @webapp.route('/add_task', methods=['POST', 'GET'])
 def add_task():
+    # Handles requests to show form to add a Task;
+    # and Inserts results of that form to Tasks table
     db_connection = connect_to_database()
     if request.method == 'GET':
+        # Show the add task form
         query = 'SELECT tag_id, name FROM Tags;'
         all_tags = execute_query(db_connection, query).fetchall()
         query = 'SELECT user_id, first_name, last_name FROM Users;'
@@ -487,6 +492,7 @@ def add_task():
         return render_template('add_task.html', form_action='/add_task', all_tags=all_tags, users=users)
 
     elif request.method == 'POST':
+        # Insert the Task data from the form
         print('Adding a Task...')
         task_name = request.form['task_name']
         task_status = str(request.form['task_status'])
@@ -519,13 +525,17 @@ def add_task():
 # creates user-specific task
 @webapp.route('/add_task/<int:user_id>', methods=['POST', 'GET'])
 def add_user_specific_task(user_id):
+    # Handles requests to show form to add a Task for a specific user
+    # with User ID = user_id
     db_connection = connect_to_database()
     if request.method == 'GET':
+        # Show the form
         query = 'SELECT tag_id, name FROM Tags;'
         all_tags = execute_query(db_connection, query).fetchall()
         return render_template('add_task.html', form_action='/add_task/'+str(user_id), all_tags=all_tags, user_id=user_id)
 
     elif request.method == 'POST':
+        # Insert the data from the form
         print('Adding a Task...')
         task_name = request.form['task_name']
         task_status = str(request.form['task_status'])
@@ -557,6 +567,7 @@ def add_user_specific_task(user_id):
 
 @webapp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
+    # Deletes Task with Task ID = task_id
     db_connection = connect_to_database()
     query = 'DELETE FROM Tasks WHERE task_id = %s;'
     data = (task_id,)
@@ -566,6 +577,8 @@ def delete_task(task_id):
 
 @webapp.route('/update_task/<int:task_id>', methods=['POST', 'GET'])
 def update_task(task_id):
+    # Handles requests to show form to update a Task, and updates
+    # the database with that data
     db_connection = connect_to_database()
     # get this Task's Tags
     query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
@@ -606,17 +619,6 @@ def update_task(task_id):
             execute_query(db_connection, query, data)
         except (mariadb.Error, mariadb.Warning):
             return render_template('error.html')
-        # # remove all existing tags from this task
-        # query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s;'
-        # data = (task_id,)
-        # execute_query(db_connection, query, data)
-
-        # # now add the selected tags to Tasks_Tags
-        # print('selected-tags: ', task_selected_tags)
-        # for tag in task_selected_tags:
-        #     query = 'INSERT INTO Tasks_Tags(tk_id, tg_id) VALUES (%s, %s);'
-        #     data = (task_id, int(tag))
-        #     execute_query(db_connection, query, data)
         
         new_tags = []
         for tag in task_selected_tags:
@@ -644,6 +646,7 @@ def update_task(task_id):
 
 @webapp.route('/show_tags')
 def show_tags():
+    # Shows all Tags in the Tags table
     db_connection = connect_to_database()
     query = 'SELECT tag_id, name FROM Tags;'
     results = execute_query(db_connection, query).fetchall()
@@ -651,6 +654,7 @@ def show_tags():
 
 @webapp.route('/delete_tag/<int:tag_id>')
 def delete_tag(tag_id):
+    # Deletes Tag with Tag ID = tag_id
     db_connection = connect_to_database()
     query = 'DELETE FROM Tags WHERE tag_id = %s;'
     data = (tag_id,)
@@ -659,11 +663,14 @@ def delete_tag(tag_id):
 
 @webapp.route('/add_tag', methods=['POST', 'GET'])
 def add_tag():
+    # Handles requests to show form to create a Tag and
+    # inserts the data into the Tags table
     db_connection = connect_to_database()
     if request.method == 'GET':
         return render_template('add_tag.html', form_action='/add_tag')
 
     elif request.method == 'POST':
+        # Inserts the new Tag's info to the Tags table
         print('Adding a Tag...')
         tag_name = request.form['tag_name']
         query = 'INSERT INTO Tags(name) VALUES (%s);'
@@ -676,14 +683,18 @@ def add_tag():
 
 @webapp.route('/update_tag/<int:tag_id>', methods=['POST', 'GET'])
 def update_tag(tag_id):
+    # Handles requests to update Tag with Tag ID = tag_id
+    # It shows a form to update the tag and updates the Tags table
     db_connection = connect_to_database()
     if request.method == 'GET':
+        # Show the form to update the Tag
         query = "SELECT tag_id, name FROM Tags WHERE tag_id = %s;"
         data = (tag_id,)
         results = execute_query(db_connection, query, data).fetchall()
         return render_template('add_tag.html', tag_data=results, form_action='/update_tag/' + str(tag_id))
 
     elif request.method == 'POST':
+        # Performs SQL query to update the task
         print('Updating Tag', tag_id, '...')
         tag_name = request.form['tag_name']
         query = 'UPDATE Tags SET name = %s WHERE tag_id = %s;'
@@ -699,6 +710,7 @@ def update_tag(tag_id):
 
 @webapp.route('/show_tasks_tags')
 def show_tasks_tags():
+    # Shows all the Tasks_Tags table
     db_connection = connect_to_database()
     query = 'SELECT tk_id AS task_id, tg_id AS tag_id, tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id ORDER BY tk_id;'
     results = execute_query(db_connection, query).fetchall()
@@ -706,6 +718,7 @@ def show_tasks_tags():
 
 @webapp.route('/delete_task_tag/<int:task_id>/<int:tag_id>')
 def delete_task_tag(task_id, tag_id):
+    # Deletes a Task-Tag entry
     db_connection = connect_to_database()
     query = 'DELETE FROM Tasks_Tags WHERE tk_id = %s AND tg_id = %s;'
     data = (task_id, tag_id)
@@ -714,8 +727,11 @@ def delete_task_tag(task_id, tag_id):
 
 @webapp.route('/add_task_tag', methods=['POST', 'GET'])
 def add_task_tag():
+    # Handles request to create a Task-Tag entry
+    # Shows the form to do this and inserts the Data to Database
     db_connection = connect_to_database()
     if request.method == 'GET':
+        # Show the form to create Task-Tag entry
         db_connection = connect_to_database()
         query = 'SELECT task_id, name FROM Tasks;'
         tasks = execute_query(db_connection, query).fetchall()
@@ -724,6 +740,7 @@ def add_task_tag():
         return render_template('add_task_tag.html', tasks=tasks, tags=tags, form_action='/add_task_tag')
 
     elif request.method == 'POST':
+        # Inserts the data to Tasks_Tags
         print('Assigning a Task to a Tag...')
         task_id = request.form['selected_task']
         tag_id = request.form['selected_tag']
