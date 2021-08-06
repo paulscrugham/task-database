@@ -195,7 +195,7 @@ def complete_task(task_id, user_id):
 
 @webapp.route('/show_badges')
 def show_badges():
-    """"""
+    """Queries the database for all existing Badges and renders a page displaying them."""
     db_connection = connect_to_database()
     query = 'SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id;'
     results = execute_query(db_connection, query).fetchall()
@@ -204,6 +204,7 @@ def show_badges():
 
 @webapp.route('/add_badge', methods=['POST', 'GET'])
 def add_badge():
+    """Queries the database to INSERT a new Badge and renders the show Badges page."""
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT tag_id, name from Tags;'
@@ -227,6 +228,7 @@ def add_badge():
 
 @webapp.route('/delete_badge/<int:id>')
 def delete_badge(id):
+    """Queries the database to delete the specified badge by its id."""
     db_connection = connect_to_database()
     query = 'DELETE FROM Badges WHERE badge_id = %s;'
     data = (id,)
@@ -235,6 +237,8 @@ def delete_badge(id):
 
 @webapp.route('/update_badge/<int:id>', methods=['POST', 'GET'])
 def update_badge(id):
+    """Queries the database for the specified Badge entry, then updates the entry
+    with any user provided changes."""
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT tag_id, name from Tags;'
@@ -248,10 +252,12 @@ def update_badge(id):
         print('Updating Badge', id, '...')
         badge_name = request.form['badge_name']
         badge_criteria = request.form['badge_criteria']
+        
         if request.form['badge_tag'] == "None":
-            badge_tag = None
+            badge_tag = None  # set badge_tag to None to create NULL entry in database
         else:
             badge_tag = request.form['badge_tag']
+        
         query = 'UPDATE Badges SET name = %s, tg_id = %s, criteria = %s WHERE badge_id = %s;'
         data = (badge_name, badge_tag, badge_criteria, id)
         execute_query(db_connection, query, data)
@@ -262,6 +268,7 @@ def update_badge(id):
 
 @webapp.route('/show_users')
 def show_users():
+    """Queries the database for all existing Users and renders a page displaying them."""
     db_connection = connect_to_database()
     # get all user rows
     query = 'SELECT user_id, first_name, last_name FROM Users;'
@@ -285,6 +292,7 @@ def show_users():
 
 @webapp.route('/add_user', methods=['POST', 'GET'])
 def add_user():
+    """Queries the database to INSERT a new User entry from user provided data."""
     db_connection = connect_to_database()
     if request.method == 'GET':
         query = 'SELECT badge_id, name FROM Badges;'
@@ -310,6 +318,7 @@ def add_user():
 
 @webapp.route('/delete_user/<int:id>')
 def delete_user(id):
+    """Queries the database to DELETE a user with the specified user id."""
     db_connection = connect_to_database()
     query = 'DELETE FROM Users WHERE user_id = %s;'
     data = (id,)
@@ -318,6 +327,8 @@ def delete_user(id):
 
 @webapp.route('/update_user/<int:id>', methods=['POST', 'GET'])
 def update_user(id):
+    """On a GET request, queries the database to get existing data for the specified User.
+    On a POST, queries the database to UPDATE the User with any provided changes."""
     db_connection = connect_to_database()
     
     # get this user's badges
@@ -374,14 +385,15 @@ def update_user(id):
 
 @webapp.route('/show_users_badges')
 def show_users_badges():
+    """Queries the database for all Badges assigned to Users."""
     db_connection = connect_to_database()
     query = 'SELECT users.first_name, badges.name, users.user_id, badges.badge_id FROM Users_Badges u_b JOIN Users users ON u_b.ur_id = users.user_id JOIN Badges badges ON u_b.be_id = badges.badge_id ORDER BY users.first_name;'
     users_badges = execute_query(db_connection, query).fetchall()
-
     return render_template('show_users_badges.html', users_badges=users_badges)
 
 @webapp.route('/delete_user_badge/<int:user_id>/<int:badge_id>')
 def delete_user_badge(user_id, badge_id):
+    """Queries the database to DELETE a User-Badge assignment with the provided user id."""
     db_connection = connect_to_database()
     query = 'DELETE FROM Users_Badges WHERE ur_id = %s AND be_id = %s;'
     data = (user_id, badge_id)
@@ -390,6 +402,7 @@ def delete_user_badge(user_id, badge_id):
 
 @webapp.route('/add_user_badge', methods=['POST', 'GET'])
 def add_user_badge():
+    """Queries the database to INSERT a new User-Badge assignment with the provided user id and badge id."""
     db_connection = connect_to_database()
     if request.method == 'GET':
         user = None
@@ -402,18 +415,16 @@ def add_user_badge():
         print('Assigning a Badge...')
         badge_id = request.form['selected_badge']
         user_id = request.form['selected_user']
-        # try/except to handle duplicate entries
-        try:
-            query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
-            data = (user_id, badge_id)
-            execute_query(db_connection, query, data)
-            return redirect('/show_users_badges')
-        except:
-            return render_template('error.html')
-        
+        query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
+        data = (user_id, badge_id)
+        execute_query(db_connection, query, data)
+        return redirect('/show_users_badges')
 
+        
 @webapp.route('/add_user_badge/<int:user_id>', methods=['POST', 'GET'])
 def add_user_specific_badge(user_id):
+    """Queries the database to INSERT a new User-Badge assignment with the specified badge id.
+    Used on the user main page to directly assign a badge."""
     db_connection = connect_to_database()
     if request.method == 'GET':
         all_users = None
@@ -426,13 +437,10 @@ def add_user_specific_badge(user_id):
     elif request.method == 'POST':
         print('Assigning a Badge...')
         badge_id = request.form['selected_badge']
-        try:
-            query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
-            data = (user_id, badge_id)
-            execute_query(db_connection, query, data)
-            return redirect('/user_main_page/' + str(user_id))
-        except:
-            return render_template('error.html')
+        query = 'INSERT INTO Users_Badges(ur_id, be_id) VALUES (%s, %s);'
+        data = (user_id, badge_id)
+        execute_query(db_connection, query, data)
+        return redirect('/user_main_page/' + str(user_id))
 
 
 # app routes for Tasks page
