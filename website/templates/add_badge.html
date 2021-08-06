@@ -17,9 +17,9 @@
       <div class="mb-3">
         <label for="badge_criteria" class="form-label">Choose how many Pomodoros must be completed to earn this badge (criteria):</label>
         {% if badge %}
-        <input type="number" class="form-control" id="badge_criteria" name="badge_criteria" value="{{ badge[0][2] }}" required>
+        <input type="number" class="form-control" id="badge_criteria" name="badge_criteria" value="{{ badge[0][2] }}" min="1" required>
         {% else %}
-        <input type="number" class="form-control" id="badge_criteria" name="badge_criteria" required>
+        <input type="number" class="form-control" id="badge_criteria" name="badge_criteria" min="1" required>
         {% endif %}
       </div>
 
