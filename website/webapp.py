@@ -443,8 +443,6 @@ def show_tasks():
         while all_assigned_tags and all_assigned_tags[0][0] == t[0]:
             row[7].append(all_assigned_tags.pop(0)[1])
         tasks_tags.append(row)
-    
-    print(results[0][1])
 
     return render_template('show_tasks.html', tasks=tasks_tags)
 
