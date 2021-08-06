@@ -53,7 +53,7 @@ CREATE TABLE `Tasks_Tags` (
 -- Sample data
 
 -- Users Table
-INSERT INTO Users(first_name, last_name) VALUES ("Frodo", "Baggins"), ("Pomo", "Doro");
+INSERT INTO Users(first_name, last_name) VALUES ("Frodo", "Baggins"), ("Pomo", "Doro"), ("Bilbo", "Baggins"), ("Smaug", "The Magnificent");
 
 -- Tags Table
 INSERT INTO Tags(name) VALUES ("High Priority"), ("Low Priority"), ("School"), ("Work"), ("Personal");
