@@ -47,6 +47,12 @@ def error_handler():
 def warning_handler():
    return render_template('error.html')
 
+
+# General error handler for all exceptions e.g. 500
+@webapp.errorhandler(Exception)
+def general_handler(error):
+   return render_template('error.html')
+
 # app routes for user searches
 
 @webapp.route('/user_search', methods=['POST'])
