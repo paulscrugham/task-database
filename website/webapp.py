@@ -33,6 +33,7 @@ def index():
 
 @webapp.route('/')
 def home():
+    """Renders the landing page for the website."""
     return render_template('home.html')
 
 
@@ -57,6 +58,8 @@ def general_handler(error):
 
 @webapp.route('/user_search', methods=['POST'])
 def user_search():
+    """Searches for a user in the data base with the specified search term
+    and renders a list of results."""
     db_connection = connect_to_database()
     search_term = request.form['search_term']
     search_term = '%' + search_term + '%'  # concatenate %s with search term outside of query
@@ -71,6 +74,8 @@ def user_search():
 
 @webapp.route('/user_main_page/<int:id>')
 def user_main_page(id):
+    """Queries the database for user-specific data based on the 
+    specified user id and renders their dashboard."""
     db_connection = connect_to_database()
 
     # query to select User's name and id
@@ -112,8 +117,8 @@ def user_main_page(id):
 
 @webapp.route('/add_task_tag_user/<int:task_id>', methods=['POST', 'GET'])
 def add_task_tag_user(task_id):
+    """Allows the user to directly assign Tags to a Task from their dashboard."""
     db_connection = connect_to_database()
-    # query DB for tags associated with task
     query = 'SELECT tg_id FROM Tasks_Tags WHERE tk_id=%s;'
     data = (task_id,)
     queried_tags = execute_query(db_connection, query, data).fetchall()
@@ -159,7 +164,6 @@ def add_task_tag_user(task_id):
         query = 'SELECT assigned_user FROM Tasks WHERE task_id=%s;'
         data = (task_id,)
         user_id = execute_query(db_connection, query, data).fetchone()
-
         return redirect('/user_main_page/' + str(user_id[0]))
         
 
@@ -167,7 +171,7 @@ def add_task_tag_user(task_id):
 
 @webapp.route('/timer/<int:task_id>', methods=['POST', 'GET'])
 def timer(task_id):
-    # selected_task = request.form['selected_task']
+    """Gets information for the specified Task and renders the Pomodoro Timer page."""
     db_connection = connect_to_database()
     query = 'SELECT task_id, name, assigned_user, status, due_date, pomodoros FROM Tasks WHERE task_id=%s;'
     data = (task_id,)
@@ -177,6 +181,8 @@ def timer(task_id):
 
 @webapp.route('/complete_task/<int:task_id>/<int:user_id>')
 def complete_task(task_id, user_id):
+    """Marks the specified task complete and redirects to the user's dashboard.
+    Used to update a Task from the Timer page."""
     db_connection = connect_to_database()
     query = 'UPDATE Tasks SET status=1 WHERE task_id=%s;'
     data = (task_id,)
@@ -189,6 +195,7 @@ def complete_task(task_id, user_id):
 
 @webapp.route('/show_badges')
 def show_badges():
+    """"""
     db_connection = connect_to_database()
     query = 'SELECT b.badge_id, b.name, t.name, b.criteria FROM Badges b LEFT JOIN Tags t ON b.tg_id = t.tag_id;'
     results = execute_query(db_connection, query).fetchall()
