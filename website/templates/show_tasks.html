@@ -12,7 +12,8 @@
             <th>Status</th>
             <th>Due Date</th>
             <th>Pomodoros</th>
-            <th>Assigned User (FK)</th>
+            <th>Assigned User</th>
+            <th>Tags</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -21,7 +22,7 @@
                 <td>{{ item[0] }}</td>
                 <td>{{ item[1] }}</td>
                 {% if item[2] == 0 %}
-                <td>In Progress</td>
+                <td>In-Progress</td>
                 {% elif item[2] == 1 %}
                 <td>Complete</td>
                 {% endif %}
@@ -29,9 +30,11 @@
                 <td>{{ item[3] }}</td>
                 <td>{{ item[4] }}</td>
                 <td>{{ item[5] }} {{ item[6] }}</td>
+                <td>{% for tag in item[7] %}{{ tag }}, {% endfor %}</td>
                 <td>
                     <button onclick="window.location.href='/update_task/{{item[0]}}';" type="button" class="btn btn-primary">Update</button>
                     <button onclick="window.location.href='/delete_task/{{item[0]}}';" type="button" class="btn btn-danger">Delete</button>
+                    <button onclick="window.location.href='/timer/{{item[0]}}';" type="button" class="btn btn-success">Timer</button>
                 </td>
             </tr>
             {% endfor %}
