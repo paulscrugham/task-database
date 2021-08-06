@@ -76,7 +76,11 @@ INSERT INTO Tasks_Tags(tk_id, tg_id)
 VALUES ((SELECT task_id FROM Tasks WHERE name="Write another book"),
         (SELECT tag_id FROM Tags WHERE name="Low Priority")),
        ((SELECT task_id FROM Tasks WHERE name="Write another book"),
-        (SELECT tag_id FROM Tags WHERE name="Personal"));
+        (SELECT tag_id FROM Tags WHERE name="Personal")),
+        ((SELECT task_id FROM Tasks WHERE name="Finish project requirements document"),
+        (SELECT tag_id FROM Tags WHERE name="Work")),
+        ((SELECT task_id FROM Tasks WHERE name="Finish project requirements document"),
+        (SELECT tag_id FROM Tags WHERE name="High Priority"));
 
 -- Users_Badges Table
 INSERT INTO Users_Badges(ur_id, be_id)
