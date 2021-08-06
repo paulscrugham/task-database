@@ -55,9 +55,9 @@
       <div class="mb-3">
         <label for="task_pomodoros" class="form-label">Enter a number of Pomodoros:</label>
         {% if task_data %}
-        <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros" value="{{task_data[0][4]}}" required>
+        <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros" value="{{task_data[0][4]}}" min="1" required>
         {% else %}
-        <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros" required>
+        <input id="task_pomodoros" type="number" class="form-control" name="task_pomodoros" min="1" required>
         {% endif %}
       </div>
 
