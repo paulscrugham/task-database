@@ -430,7 +430,23 @@ def show_tasks():
     query = 'SELECT t.task_id, t.name, t.status, t.due_date, t.pomodoros, u.first_name, u.last_name FROM Tasks t LEFT JOIN Users u ON t.assigned_user = u.user_id;'
     results = execute_query(db_connection, query).fetchall()
     print(results)
-    return render_template('show_tasks.html', tasks=results)
+
+    # get all assigned tags
+    query = 'SELECT tt.tk_id, tg.name FROM Tasks_Tags tt JOIN Tags tg ON tg.tag_id = tt.tg_id ORDER BY tk_id;'
+    all_assigned_tags = list(execute_query(db_connection, query).fetchall())
+    print(all_assigned_tags)
+    
+    #create new data structure with user data and their badges
+    tasks_tags = []
+    for t in results:
+        row = [t[0], t[1], t[2], datetime_to_string(t[3]), t[4], t[5], t[6], []]
+        while all_assigned_tags and all_assigned_tags[0][0] == t[0]:
+            row[7].append(all_assigned_tags.pop(0)[1])
+        tasks_tags.append(row)
+    
+    print(results[0][1])
+
+    return render_template('show_tasks.html', tasks=tasks_tags)
 
 @webapp.route('/show_tasks/<int:user_id>')
 def show_user_tasks(user_id):
@@ -665,7 +681,7 @@ def update_tag(tag_id):
 @webapp.route('/show_tasks_tags')
 def show_tasks_tags():
     db_connection = connect_to_database()
-    query = 'SELECT tk_id AS task_id, tg_id AS tag_id, tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id;'
+    query = 'SELECT tk_id AS task_id, tg_id AS tag_id, tasks.name AS Task, tags.name AS Tag FROM Tasks_Tags t_t JOIN Tasks tasks ON t_t.tk_id = tasks.task_id JOIN Tags tags ON t_t.tg_id = tags.tag_id ORDER BY tk_id;'
     results = execute_query(db_connection, query).fetchall()
     return render_template('show_tasks_tags.html', tasks_tags_data=results)
 
