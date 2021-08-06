@@ -6,6 +6,8 @@
     <br>
 
     <form class="form" id="add_task_form" action="{{ form_action }}" method="POST">
+
+      {# defines input field to enter the Task's Name #}
       <div class="mb-3">
         <label for="task_name" class="form-label">Enter a Task name:</label>
         {% if task_data %}
@@ -15,6 +17,7 @@
         {% endif %}
       </div>
 
+      {# defines input field to enter the Task's Status #}
       <div class="mb-3">
         <label for="task_status" class="form-label">Select a Task status:</label>
         <br>
@@ -34,6 +37,7 @@
         </select>
       </div>
 
+      {# defines input field to enter the Task's Due Date #}
       <div class="mb-3">
         <label for="task_due_date" class="form-label">Enter a date due:</label>
         {% if due_date %}
@@ -43,6 +47,7 @@
         {% endif %}
       </div>
 
+      {# defines input field to define when the Task is Due #}
       <div class="mb-3">
         <label for="task_time_due" class="form-label">Enter a time due:</label>
         {% if due_date %}
@@ -52,6 +57,7 @@
         {% endif %}
       </div>
 
+      {# defines input field to enter the number of Pomodoros assigned to the Task #}
       <div class="mb-3">
         <label for="task_pomodoros" class="form-label">Enter a number of Pomodoros:</label>
         {% if task_data %}
@@ -61,6 +67,7 @@
         {% endif %}
       </div>
 
+      {# defines Dropdown to Select the Task's Assigned User #}
       <label class="form-label">Select Tags to Assign to the Task:</label>
       {% if all_tags is defined %}
         {% for item in all_tags %}
@@ -78,6 +85,9 @@
         {% endfor %}
       {% endif %}
       <br><br>
+
+
+      {# defines Checkboxes to select the Tags to Assign to the Task #}
 
       {% if user_id is not defined %}
       <div class="mb-3">
