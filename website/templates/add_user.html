@@ -7,6 +7,7 @@
     <form class="form" action="{{ form_action }}" method="post">
       <div class="mb-3">
         <label for="user_first_name" class="form-label">Enter a User's first name (30 characters max):</label>
+        {# control block to add a default value if a data object exists #}
         {% if user %}
         <input type="text" class="form-control" id="user_first_name" name="user_first_name" value="{{ user[0][0] }}" required>
         {% else %}
@@ -16,6 +17,7 @@
 
       <div class="mb-3">
         <label for="user_last_name" class="form-label">Enter a User's last name (30 characters max):</label>
+        {# control block to add a default value if data object exists #}
         {% if user %}
         <input type="text" class="form-control" id="user_last_name" name="user_last_name" value="{{ user[0][1] }}" required>
         {% else %}
@@ -26,6 +28,7 @@
       <label class="form-label">Select Badges to Assign to the User:</label>
       {% for badge in all_badges %}
       <div class="form-check">
+        {# control block to check badges if the data object exists #}
           {% if current_badges and badge[0] in current_badges %}
           <input class="form-check-input" type="checkbox" value="{{ badge[0] }}" id="badge{{ badge[0] }}" name="badges" checked>
           {% else %}

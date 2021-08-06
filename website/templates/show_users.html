@@ -33,12 +33,14 @@
             <th>Actions</th>
         </thead>
         <tbody>
+            {# displays user entry data in the HTML table #}
             {% for item in users %}
             <tr>
                 <td>{{ item[0] }}</td>
                 <td>{{ item[1] }}</td>
                 <td>{{ item[2] }}</td>
                 <td>
+                    {# displays all badges assigned to this user #}
                     {% for badge in item[3] %}
                     {{ badge }}<br>
                     {% endfor %}
