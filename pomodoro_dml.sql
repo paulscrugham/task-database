@@ -12,19 +12,20 @@ WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', :userInput, '%');
 -- ***USER MAIN PAGE QUERIES***
 
 -- SELECT Query for In-Progress Tasks and associated Tags
-SELECT * FROM Tasks 
-JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id 
-JOIN Tags ON t_t.tg_id = Tags.tag_id 
-WHERE assigned_user = :userInput AND status = 0;
+SELECT Tasks.name, Tags.name, Tasks.task_id, Tasks.due_date FROM Tasks 
+LEFT JOIN Tasks_Tags t_t ON Tasks.task_id = t_t.tk_id 
+LEFT JOIN Tags ON t_t.tg_id = Tags.tag_id 
+WHERE assigned_user = :userInput AND status = 0 
+ORDER BY due_date ASC;
 
 -- SELECT Query for all of a User's tasks
-SELECT * FROM Tasks WHERE assigned_user = :userInput;
+SELECT task_id, name, due_date FROM Tasks WHERE assigned_user = :userInput ORDER BY due_date;
 
 -- SELECT query for a User's earned badges
-SELECT b.* FROM Badges b INNER JOIN Users_Badges u_b
-	ON u_b.be_id = b.badge_id
-WHERE u_b.ur_id = :selected_User_id
-GROUP BY b.badge_id;
+SELECT badges.name AS Badge FROM Users_Badges u_b 
+JOIN Users users ON u_b.ur_id = users.user_id 
+JOIN Badges badges ON u_b.be_id = badges.badge_id 
+WHERE users.user_id=:userInput;
 
 
 -- ***TIMER PAGE QUERIES***
@@ -66,7 +67,7 @@ DELETE FROM Tasks WHERE task_id = :selected_Task_id;
 -- ***TAGS PAGE QUERIES***
 
 -- SELECT Query for all columns, Tags Table (Table-Specific Query)
-SELECT * FROM Tags;
+SELECT tag_id, name FROM Tags;
 
 -- INSERT Query, Tags Table (Table-Specific Query)
 INSERT INTO Tags(name) VALUES (:nameInput);
@@ -95,7 +96,7 @@ DELETE FROM Tags WHERE tk_id = :selected_task_id AND tg_id = :selected_tag_id;
 -- ***USERS PAGE QUERIES***
 
 -- SELECT Query, Users Table (Table-Specific Query)
-SELECT * FROM Users;
+SELECT user_id, first_name, last_name FROM Users;
 
 -- INSERT Query, Users Table (Table-Specific Query)
 INSERT INTO Users(first_name, last_name) VALUES (:first_nameInput, :last_nameInput);
