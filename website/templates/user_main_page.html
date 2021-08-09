@@ -8,6 +8,7 @@
   <div class="container">
     <h3>Upcoming Tasks</h3>
     <div class="card-columns">
+      {# populate task cards with tags #}
       {% for task, tags in tasks_data.items() %}
       <div class="card">
         <div class="card-header">
@@ -49,6 +50,7 @@
     <h3>{{ user[1] }} {{ user[2] }}'s Earned Badges</h3>
     <table class="table table-bordered">
       <tr>
+      {# populate badges assigned to user #}
       {% for item in badges %}
         <td>{{ item[0] }}</td>
       {% endfor %}
