@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2021 at 04:50 PM
+-- Generation Time: Aug 10, 2021 at 01:00 AM
 -- Server version: 10.4.20-MariaDB-log
--- PHP Version: 7.4.21
+-- PHP Version: 7.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `Badges` (
   `badge_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `tg_id` int(11) DEFAULT NULL,
-  `criteria` int(4) NOT NULL
+  `criteria` int(4) NOT NULL CHECK (`criteria` >= 1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -42,8 +42,7 @@ INSERT INTO `Badges` (`badge_id`, `name`, `tg_id`, `criteria`) VALUES
 (1, 'Complete 10 High Priority Pomodoros', 1, 10),
 (2, 'Complete 5 School Pomodoros', 3, 5),
 (3, 'Complete 20 Work Pomodoros', 4, 20),
-(4, 'Complete 50 Pomorodos', NULL, 50),
-(5, 'Complete 10 Pomodoros', NULL, 10);
+(4, 'Complete 50 Pomorodos', NULL, 50);
 
 -- --------------------------------------------------------
 
@@ -63,10 +62,9 @@ CREATE TABLE `Tags` (
 INSERT INTO `Tags` (`tag_id`, `name`) VALUES
 (1, 'High Priority'),
 (2, 'Low Priority'),
-(3, 'School'),
-(4, 'Work'),
 (5, 'Personal'),
-(6, 'Medium Priority');
+(3, 'School'),
+(4, 'Work');
 
 -- --------------------------------------------------------
 
@@ -80,7 +78,7 @@ CREATE TABLE `Tasks` (
   `assigned_user` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `due_date` datetime NOT NULL,
-  `pomodoros` int(4) NOT NULL
+  `pomodoros` int(4) NOT NULL CHECK (`pomodoros` >= 1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -90,8 +88,7 @@ CREATE TABLE `Tasks` (
 INSERT INTO `Tasks` (`task_id`, `name`, `assigned_user`, `status`, `due_date`, `pomodoros`) VALUES
 (1, 'Complete homework assignment #4', 2, 0, '2021-08-01 08:30:00', 4),
 (2, 'Finish project requirements document', 2, 0, '2021-08-10 11:30:00', 10),
-(3, 'Write another book', 1, 0, '2021-07-20 12:30:00', 1),
-(4, 'Try a new food', 1, 0, '2021-07-31 11:00:00', 4);
+(3, 'Write another book', 1, 0, '2021-07-20 12:30:00', 1);
 
 -- --------------------------------------------------------
 
@@ -109,11 +106,10 @@ CREATE TABLE `Tasks_Tags` (
 --
 
 INSERT INTO `Tasks_Tags` (`tk_id`, `tg_id`) VALUES
-(1, 1),
+(2, 1),
+(2, 4),
 (3, 2),
-(3, 5),
-(4, 2),
-(4, 5);
+(3, 5);
 
 -- --------------------------------------------------------
 
@@ -133,7 +129,9 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`user_id`, `first_name`, `last_name`) VALUES
 (1, 'Frodo', 'Baggins'),
-(2, 'Pomo', 'Doro');
+(2, 'Pomo', 'Doro'),
+(3, 'Bilbo', 'Baggins'),
+(4, 'Smaug', 'The Magnificent');
 
 -- --------------------------------------------------------
 
@@ -165,19 +163,22 @@ INSERT INTO `Users_Badges` (`ur_id`, `be_id`) VALUES
 --
 ALTER TABLE `Badges`
   ADD PRIMARY KEY (`badge_id`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `tg_id` (`tg_id`);
 
 --
 -- Indexes for table `Tags`
 --
 ALTER TABLE `Tags`
-  ADD PRIMARY KEY (`tag_id`);
+  ADD PRIMARY KEY (`tag_id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `Tasks`
 --
 ALTER TABLE `Tasks`
   ADD PRIMARY KEY (`task_id`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `assigned_user` (`assigned_user`);
 
 --
@@ -208,25 +209,25 @@ ALTER TABLE `Users_Badges`
 -- AUTO_INCREMENT for table `Badges`
 --
 ALTER TABLE `Badges`
-  MODIFY `badge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `badge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Tags`
 --
 ALTER TABLE `Tags`
-  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Tasks`
 --
 ALTER TABLE `Tasks`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
