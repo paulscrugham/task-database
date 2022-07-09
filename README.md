@@ -1,4 +1,4 @@
-# SQL Task Database
+# Task Tracking SQL Database w/ Admin Web UI
 
 Based on this project: https://github.com/paulscrugham/cs340-project
 
