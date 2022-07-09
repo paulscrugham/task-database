@@ -1,4 +1,15 @@
-# Pomodoro App
+# SQL Task Database
+
+Based on this project: https://github.com/paulscrugham/cs340-project
+
+This project is task-tracking database with an admin web interface that allows a non-technical user to create/read/update/delete any database entity and modify relationships.
+
+The database stores four entities:
+
+1. Tasks
+2. Users
+3. Tags
+4. Badges
 
 ## Steps for installing app server
 
