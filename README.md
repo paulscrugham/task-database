@@ -1,8 +1,8 @@
 # Task Tracking SQL Database w/ Admin Web UI
 
-Based on this project: https://github.com/paulscrugham/cs340-project
+Based on this project: https://github.com/paulscrugham/cs340-project in collaboration with [legendMK13](https://github.com/legendMK13)
 
-This project is task-tracking database with an admin web interface that allows a non-technical user to create/read/update/delete any database entity and modify relationships.
+This project is task-tracking database with an admin web interface that allows a non-technical user to create/read/update/delete any database entity and modify relationships. This project was completed as a part of the course CS340 - Databases at Oregon State University.
 
 The database stores four entities:
 
