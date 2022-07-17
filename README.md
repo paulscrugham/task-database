@@ -2,7 +2,17 @@
 
 Based on this project: https://github.com/paulscrugham/cs340-project in collaboration with [legendMK13](https://github.com/legendMK13)
 
-This project is task-tracking database with an admin web interface that allows a non-technical user to create/read/update/delete any database entity and modify relationships. This project was completed as a part of the course CS340 - Databases at Oregon State University.
+This project is task-tracking database with an admin web interface that allows a non-technical user to create/read/update/delete any database entity and modify relationships. 
+
+This project was completed as a part of the course CS340 - Databases at Oregon State University.
+
+# Pages
+
+The database stores four entities (Tasks, Users, Tags, and Badges) with the web application supporting CRUD operations for each entity.
+
+## Tasks Page
+
+![main page](README/image-007.png)
 
 The database stores four entities:
 
