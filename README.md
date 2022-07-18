@@ -6,21 +6,27 @@ This project is task-tracking database with an admin web interface that allows a
 
 This project was completed as a part of the course CS340 - Databases at Oregon State University.
 
-# Pages
+# Web Pages
 
 The database stores four entities (Tasks, Users, Tags, and Badges) with the web application supporting CRUD operations for each entity. Here are a few examples of pages for browsing and updating entities.
 
-## Browse Tasks Page
+## Browse Tasks
 
-The Browse all Tasks page allows a user to view all Tasks as well as create, update, or delete them. The "Timer" button takes the user to a Pomodoro timer page to help complete the task.
+The Browse all Tasks page allows an admin to view all Tasks as well as create, update, or delete them. The "Timer" button takes the user to a Pomodoro timer page to help complete the task.
 
 ![browse_tasks](README/image-007.png)
 
-## Create Tasks Page
+## Create Tasks
 
 The Create/Edit a Task page allows a user to either create a new Task or update an existing one. If updating an existing Task, the forms fields are pre-populated with the Task's data.
 
-![browse_tasks](README/image-008.png)
+![create_tasks](README/image-008.png)
+
+## Browse Users
+
+The Browse Users page allows an admin to view all Users as well as create, update, or delete them. The "Dashboard" button loads a page that shows task information specific to the selected user.
+
+![browse_users](README/image-009.png)
 
 The database stores four entities:
 
