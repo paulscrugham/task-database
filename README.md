@@ -28,12 +28,11 @@ The Browse Users page allows an admin to view all Users as well as create, updat
 
 ![browse_users](README/image-009.png)
 
-The database stores four entities:
+## User Dashboard
 
-1. Tasks
-2. Users
-3. Tags
-4. Badges
+The User dashboard page shows upcoming tasks and earned badges for a specific User. 
+
+![user_dashboard](README/image-015.png)
 
 ## Steps for installing app server
 
